@@ -15,11 +15,11 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.4.2.Final'
     compile group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
 
-//    compileOnly 'org.projectlombok:lombok:1.18.12'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.12'
-//
-//    testCompileOnly 'org.projectlombok:lombok:1.18.12'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
 
 }

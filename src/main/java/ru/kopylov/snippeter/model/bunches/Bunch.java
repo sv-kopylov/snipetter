@@ -1,4 +1,4 @@
 package ru.kopylov.snippeter.model.bunches;
 
-public class SourceGenreBunch {
+public abstract class Bunch <F, S> {
 }

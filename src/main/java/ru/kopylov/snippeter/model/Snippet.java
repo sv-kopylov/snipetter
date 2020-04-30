@@ -1,10 +1,15 @@
 package ru.kopylov.snippeter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 /**
  * Центральный элемент - отрывок из произведения, обладающий, желательно всеми признаками
  */
+@Getter
+@Setter
 @Entity
 public class Snippet {
     @Id

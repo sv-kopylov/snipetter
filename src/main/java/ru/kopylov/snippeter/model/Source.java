@@ -1,11 +1,15 @@
 package ru.kopylov.snippeter.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 /**
  * Литературное произведение из которого взыт отрывок
  */
-
+@Getter
+@Setter
 @Entity
 public class Source {
     @Id
