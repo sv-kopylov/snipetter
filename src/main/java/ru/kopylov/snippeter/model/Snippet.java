@@ -22,7 +22,7 @@ public class Snippet {
     private long end;
 
     String snippet;
-    String treatedSnippet;
+    String processedSnippet;
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
     @JoinColumn(name="source_id")

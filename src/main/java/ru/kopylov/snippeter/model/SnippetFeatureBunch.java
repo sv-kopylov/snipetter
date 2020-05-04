@@ -1,16 +1,12 @@
-package ru.kopylov.snippeter.model.bunches;
+package ru.kopylov.snippeter.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Snippet;
-import ru.kopylov.snippeter.model.Substance;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@Entity
-public class SnippetSubstanceBunch {
+public class SnippetFeatureBunch {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -20,6 +16,6 @@ public class SnippetSubstanceBunch {
     private Snippet snippet;
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
-    @JoinColumn(name="substance_id")
-    private Substance substance;
+    @JoinColumn(name="feature_id")
+    private Feature feature;
 }

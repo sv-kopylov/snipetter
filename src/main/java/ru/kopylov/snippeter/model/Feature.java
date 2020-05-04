@@ -7,15 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * Помимо основного смысла могут быть дополнительные
- */
-@Getter @Setter
+@Getter
+@Setter
 @Entity
-public class Connotation {
+public class Feature {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    private String connotation;
+    public Feature(Category category, String value) {
+        this.category = category;
+        this.value = value;
+    }
+
+    private Category category;
+    private String value;
 }
