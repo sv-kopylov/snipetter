@@ -18,11 +18,16 @@ public class Snippet {
 
 
 //    позиции отрывка в произведении
-    private long begin;
-    private long end;
+    private long position=-1;
 
-    String snippet;
-    String processedSnippet;
+    @Column(columnDefinition="varchar(1024)")
+    private String snippet;
+    private String processedSnippet;
+
+    public Snippet(String snippet, Source source) {
+        this.snippet = snippet;
+        this.source = source;
+    }
 
     @ManyToOne(optional=false, cascade= CascadeType.ALL)
     @JoinColumn(name="source_id")

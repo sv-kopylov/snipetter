@@ -1,12 +1,19 @@
 package ru.kopylov.snippeter.model;
 
 public enum Category {
-    Affect,
-    Connotation,
-    Context,
-    Emotion,
-    Style,
-    Substance,
-    Type
+    TYPE, // тип отрывка (диалог, монолог, описание, действие и т.п.)
+
+    SUBSTANCE, //  суть отрывка основной смысл
+
+    CONNOTATION, // дополнительные смыслы в отрывке
+
+    EMOTION, // Эмоция автора или героя
+
+    AFFECT, // эффект производимый на читателя
+
+    STYLE, //  стиль ироничны, патетический и пр
+
+    CONTEXT // Контекст отрывка (не знаю нужен ли)
+
 
 }

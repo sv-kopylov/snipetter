@@ -3,9 +3,7 @@ package ru.kopylov.snippeter.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -16,11 +14,14 @@ public class Feature {
     @GeneratedValue
     private Long id;
 
+    public Feature() {
+    }
+
     public Feature(Category category, String value) {
         this.category = category;
         this.value = value;
     }
-
+    @Enumerated(EnumType.STRING)
     private Category category;
     private String value;
 }
