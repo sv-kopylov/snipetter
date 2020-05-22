@@ -7,12 +7,16 @@ import ru.kopylov.snippeter.model.Feature;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FeatureCategorySubController {
+/**
+ * Контроллер для взаимодействия с  OneCategoryFeatureView
+ */
+
+public class OneCategoryFeatureController {
     private Category category;
     private FeatureManager featureManager;
     private HashMap<String, Feature> availabelFeatures;
 
-    public FeatureCategorySubController(Category category, FeatureManager featureManager) {
+    public OneCategoryFeatureController(Category category, FeatureManager featureManager) {
         this.category = category;
         this.featureManager = featureManager;
         availabelFeatures = new HashMap<>();
@@ -37,5 +41,9 @@ public class FeatureCategorySubController {
 
     public Feature getByName(String name){
         return availabelFeatures.get(name);
+    }
+
+    public boolean isExist(String name){
+        return availabelFeatures.containsKey(name);
     }
 }

@@ -1,22 +1,15 @@
 package ru.kopylov.snippeter.view;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import ru.kopylov.snippeter.controllers.FeatureCategorySubController;
+import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
-import ru.kopylov.snippeter.management.FeatureManager;
-import ru.kopylov.snippeter.model.Category;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.apache.log4j.Logger;
 
 
 public class App extends Application {
@@ -33,20 +26,18 @@ public class App extends Application {
         primaryStage.setTitle("Snipetter");
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "snip_pu" );
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        em = emf.createEntityManager();
 
-        FeatureManager featureManager = new FeatureManager(em);
         FeaturesBank featuresBank = new FeaturesBank();
-        FeatureCategorySubController control = new FeatureCategorySubController(Category.AFFECT, featureManager);
-        OneCategoryFeatureView oneTypeView = new OneCategoryFeatureView(control, featuresBank);
+
+        FeaturesView featuresView = new FeaturesView(em,featuresBank);
 
 
         StackPane root = new StackPane();
-        root.getChildren().add(oneTypeView.getRoot());
+        root.getChildren().add(featuresView.getView());
         primaryStage.setOnCloseRequest(e -> shutDoun());
 
-        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.setScene(new Scene(root, 380, 420));
         primaryStage.show();
 
     }

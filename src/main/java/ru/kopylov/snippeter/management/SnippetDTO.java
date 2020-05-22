@@ -40,9 +40,6 @@ public class SnippetDTO {
         em.getTransaction().commit();
     }
 
-
-
-
     public void setPosition(int begin){
         this.snippet.setPosition(begin);
     }

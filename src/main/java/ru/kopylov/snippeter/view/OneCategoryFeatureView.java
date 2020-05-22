@@ -4,51 +4,68 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
-import ru.kopylov.snippeter.controllers.FeatureCategorySubController;
+import ru.kopylov.snippeter.controllers.OneCategoryFeatureController;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
-import ru.kopylov.snippeter.model.Feature;
+import java.util.Optional;
 
 
+/**
+ * класс отвечает за отображение одного набора управляющих элементов для управления фичами (признаками, features)
+ * один набор соответствует одной категории признаков
+ */
+public class OneCategoryFeatureView implements Viewable{
+    private static Logger logger = Logger.getLogger(OneCategoryFeatureView.class);
 
-public class OneCategoryFeatureView {
-    private static Logger logger = Logger.getLogger(FeaturesBank.class);
-
-    private FeatureCategorySubController featureCategorySubController;
+    private OneCategoryFeatureController oneCategoryFeatureController;
     private FeaturesBank featuresBank;
 
-    private HBox root;
-    private Label category;
-    private ObservableList<String> featureNames;
+    private HBox rootLayout;
+    private Label categoryLabel;
+    private ObservableList<String> featureNamesList;
     private ChoiceBox<String> choiceBox;
-    private Button sendTo;
-    private Button newFeature;
+    private Button sendToButton;
+    private Button newFeatureButton;
 
 
 
-    public OneCategoryFeatureView(FeatureCategorySubController featureCategorySubController, FeaturesBank featuresBank) {
-        this.featureCategorySubController = featureCategorySubController;
+    public OneCategoryFeatureView(OneCategoryFeatureController oneCategoryFeatureController, FeaturesBank featuresBank) {
+        this.oneCategoryFeatureController = oneCategoryFeatureController;
         this.featuresBank = featuresBank;
-        category = new Label(featureCategorySubController.getCategory().name());
-        featureNames = FXCollections.observableArrayList(featureCategorySubController.getAllFeatureValues());
-        choiceBox = new ChoiceBox<String>(featureNames);
-        sendTo = new Button("->");
-        newFeature = new Button("new");
+        categoryLabel = new Label(oneCategoryFeatureController.getCategory().name());
+        featureNamesList = FXCollections.observableArrayList(oneCategoryFeatureController.getAllFeatureValues());
+        choiceBox = new ChoiceBox<String>(featureNamesList);
+        categoryLabel.setPrefWidth(120);
+        choiceBox.setPrefWidth(140);
+        sendToButton = new Button("->");
+        newFeatureButton = new Button("new");
 
-        sendTo.setOnAction(new EventHandler<ActionEvent>() {
+        sendToButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String str = choiceBox.getValue();
                 if(str!=null&&str.length()>0){
-                    featuresBank.addFeature(featureCategorySubController.getByName(str));
+                    featuresBank.addFeature(oneCategoryFeatureController.getByName(str));
                 }
+            }
+        });
 
+        newFeatureButton.setOnAction(a ->{
+            Optional<String> item = showInputTextDialog();
+            if(item.isPresent()){
+                if(!oneCategoryFeatureController.isExist(item.get())){
+                    oneCategoryFeatureController.addNewFeature(item.get());
+                    featureNamesList.add(item.get());
 
-
+                } else {
+                    logger.warn("feature "+item.get()+"already exists in catecory "+ oneCategoryFeatureController.getCategory().name());
+                }
             }
         });
 
@@ -58,12 +75,25 @@ public class OneCategoryFeatureView {
 
 
 
-        root = new HBox(10, category, choiceBox, sendTo, newFeature);
-    }
-
-    public HBox getRoot(){
-        return root;
+        rootLayout = new HBox(10, categoryLabel, choiceBox, sendToButton, newFeatureButton);
     }
 
 
+    private  Optional<String>  showInputTextDialog() {
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Новый признак");
+        dialog.setHeaderText("в категории "+ oneCategoryFeatureController.getCategory().name());
+        dialog.setContentText("Имя:");
+
+        return dialog.showAndWait();
+
+    }
+
+
+    @Override
+    public Node getView() {
+        return rootLayout;
+    }
 }
