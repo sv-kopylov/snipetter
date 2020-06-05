@@ -19,9 +19,9 @@ public class FeaturesView implements Viewable{
 
     private VBox rootLayout;
 
-    public FeaturesView( EntityManager em, FeaturesBank featuresBank) {
+    public FeaturesView(FeaturesBank featuresBank) {
 
-        FeatureManager featureManager = new FeatureManager(em);
+        FeatureManager featureManager = new FeatureManager();
         rootLayout = new VBox();
         rootLayout.setSpacing(4);
         OneCategoryFeatureView view;

@@ -20,7 +20,6 @@ public class Source {
     private String author;
     private String translator;
     private String title;
-    private String isbn;
     private String linkToFile;
 
 
@@ -32,5 +31,16 @@ public class Source {
     private Genre genre;
 
 
-
+    @Override
+    public String toString() {
+        return "Source{" +
+                ", title='" + title + '\'' +
+                "author='" + author + '\'' +
+                ", year=" + year +
+                ", genre=" + genre +
+                ", isTranslation=" + isTranslation +
+                ", translator='" + translator + '\'' +
+                ", linkToFile='" + linkToFile + '\'' +
+                '}';
+    }
 }

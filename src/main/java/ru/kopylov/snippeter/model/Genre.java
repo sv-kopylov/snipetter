@@ -11,7 +11,7 @@ import javax.persistence.Id;
 /**
  * Жанр - свуязан с произведением (источником) но не с отрывком
  */
-@Getter @Setter @ToString
+@Getter @Setter
 @Entity
 public class Genre {
     public Genre() {
@@ -25,5 +25,10 @@ public class Genre {
 
     public Genre(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

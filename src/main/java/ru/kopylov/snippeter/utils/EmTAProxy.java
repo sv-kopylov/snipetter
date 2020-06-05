@@ -2,9 +2,13 @@ package ru.kopylov.snippeter.utils;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.stream.Stream;
 
 /**
- * оборачивает сохранение в транзакцию
+ * РѕР±РѕСЂР°С‡РёРІР°РµС‚ СЃРѕС…СЂР°РЅРµРЅРёРµ РІ С‚СЂР°РЅР·Р°РєС†РёСЋ
  */
 public class EmTAProxy {
     private EntityManager em;
@@ -20,6 +24,15 @@ public class EmTAProxy {
         em.persist(entity);
         em.flush();
         em.getTransaction().commit();
+
+    }
+
+    public <T> Stream <T> getAllInstancesStream (Class clazz){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(clazz);
+        Root<T> from = query.from(clazz);
+        query.select(from);
+       return em.createQuery(query).getResultStream();
 
     }
 }

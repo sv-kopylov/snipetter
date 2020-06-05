@@ -24,4 +24,8 @@ public class Feature {
     @Enumerated(EnumType.STRING)
     private Category category;
     private String value;
+
+    public String toString(){
+        return category.toString()+"-"+value;
+    }
 }

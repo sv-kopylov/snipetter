@@ -3,6 +3,7 @@ package ru.kopylov.snippeter.management;
 import ru.kopylov.snippeter.model.Category;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.utils.EmTAProxy;
+import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,11 +15,10 @@ import java.util.HashMap;
 
 public class FeatureManager {
     private final HashMap<Category, ArrayList<Feature>> features;
-    private EntityManager em;
+    private EntityManager em = EntityManagerHolder.getInstance().getEntityManager();
     private EmTAProxy emTAProxy;
 
-    public FeatureManager(EntityManager em) {
-        this.em=em;
+    public FeatureManager() {
         emTAProxy = new EmTAProxy(em);
         this.features = new HashMap<>();
         for(Category cat: Category.values()){
