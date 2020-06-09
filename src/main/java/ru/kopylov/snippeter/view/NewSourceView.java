@@ -120,7 +120,7 @@ public class NewSourceView implements Viewable {
 
         });
 
-        saveBookButton.setOnAction(event -> saveSource());
+        saveBookButton.setOnAction(event -> {saveSource(); stage.close();});
 
 
 

@@ -33,14 +33,6 @@ public class Source {
 
     @Override
     public String toString() {
-        return "Source{" +
-                ", title='" + title + '\'' +
-                "author='" + author + '\'' +
-                ", year=" + year +
-                ", genre=" + genre +
-                ", isTranslation=" + isTranslation +
-                ", translator='" + translator + '\'' +
-                ", linkToFile='" + linkToFile + '\'' +
-                '}';
+        return title+". \n\t"+author;
     }
 }

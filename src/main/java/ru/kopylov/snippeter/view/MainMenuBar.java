@@ -14,7 +14,7 @@ public class MainMenuBar {
     private MenuItem newSource = new MenuItem("Новый источник");
     private MenuItem chooseSource = new MenuItem("Выбрать источник");
 
-    private NewSourceView newSourceView;
+
 
 
     public MainMenuBar(Stage parent) {
@@ -25,8 +25,16 @@ public class MainMenuBar {
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(parent);
-            newSourceView = new NewSourceView(dialog);
-            Scene dialogScene = new Scene((Pane)newSourceView.getView(), 300, 420);
+            Scene dialogScene = new Scene((Pane)new NewSourceView(dialog).getView(), 300, 420);
+            dialog.setScene(dialogScene);
+            dialog.show();
+        });
+
+        chooseSource.setOnAction(event ->{
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(parent);
+            Scene dialogScene = new Scene((Pane)new ChooseSourceView(dialog).getView(), 300, 420);
             dialog.setScene(dialogScene);
             dialog.show();
         });
