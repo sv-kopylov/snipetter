@@ -34,14 +34,12 @@ public class App extends Application {
 
 
 
-
         SnippetSaveView snippetSaveView = new SnippetSaveView();
         MainMenuBar mainMenuBar = new MainMenuBar(primaryStage);
         TextViewer textViewer = new TextViewer();
         Context.getInstance().put("textViewer",textViewer);
 
         GridPane mainPane = new GridPane();
-//        mainPane.setGridLinesVisible(true);
         mainPane.setPadding(new Insets(20));
         mainPane.setHgap(10);
         mainPane.setVgap(10);

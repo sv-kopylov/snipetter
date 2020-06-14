@@ -37,6 +37,8 @@ public class ChooseSourceView implements Viewable {
                Source source = (Source) listView.getSelectionModel().getSelectedItem();
                logger.info(source+" selected");
                textViewer.setByURL(source.getLinkToFile());
+               SnippetSaveView snippetSaveView = (SnippetSaveView)Context.getInstance().get("snippetSaveView");
+               snippetSaveView.setSource(source);
                parent.close();
 
             }

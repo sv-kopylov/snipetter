@@ -10,11 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.SnippetDTO;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Source;
+import ru.kopylov.snippeter.utils.Context;
 
 import javax.persistence.EntityManager;
 
@@ -43,7 +45,7 @@ public class SnippetSaveView implements Viewable {
         featuresBank = new FeaturesBank();
 
         snippetText = new Label("Здесь будет в меру длинный и красивый отрывок текста, который нужно будет исследовать");
-        snippetText.setStyle("-fx-border-color: black; -fx-background-color: white");
+        snippetText.setStyle("-fx-border-color: black; -fx-background-color: white; -fx-font-size: 140%");
         snippetText.setWrapText(true);
 
         featuresView = new FeaturesView(featuresBank);
@@ -72,6 +74,8 @@ public class SnippetSaveView implements Viewable {
         root.add(remButton, 3, 1);
         root.add(flushButton, 4, 1);
         root.setStyle("-fx-border-color: black;");
+
+        Context.getInstance().put("snippetSaveView", this);
 
     }
 

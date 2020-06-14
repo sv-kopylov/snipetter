@@ -1,12 +1,31 @@
-group 'ru.kopylov'
-version '1.0-SNAPSHOT'
-
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+
+group 'ru.kopylov'
+version '0.0.1'
+
+mainClassName = 'ru.kopylov.snippeter.view.App'
 
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+jar {
+    baseName = 'snipp'
+    version = "${version}"
+    manifest {
+        attributes 'Main-Class': 'ru.kopylov.snippeter.view.App'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -17,12 +36,6 @@ dependencies {
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
-//    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
-//    testCompile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
-//    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-
-
-
 
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'

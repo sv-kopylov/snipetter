@@ -13,9 +13,14 @@ import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.management.GenreManager;
 import ru.kopylov.snippeter.management.SourceManager;
 import ru.kopylov.snippeter.model.Genre;
+import ru.kopylov.snippeter.utils.SimpleTransformer;
 
-import javax.persistence.EntityManager;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 
@@ -69,37 +74,39 @@ public class NewSourceView implements Viewable {
         root.setHgap(10);
         root.setVgap(10);
 
-        root.add(titleLabel, 0, 0);
-        root.add(titleTF, 1, 0);
+        root.add(chooseFileButton, 0, 0);
+        root.add(linkToFileLabel, 0, 1,2,1);
 
-        root.add(authorLabel, 0, 1);
-        root.add(authorTF, 1, 1);
+        root.add(titleLabel, 0, 2);
+        root.add(titleTF, 1, 2);
 
-        root.add(yearLabel, 0, 2);
-        root.add(yearTF, 1, 2);
+        root.add(authorLabel, 0, 3);
+        root.add(authorTF, 1, 3);
 
-        root.add(genreLabel, 0, 3);
+        root.add(yearLabel, 0, 4);
+        root.add(yearTF, 1, 4);
 
-        root.add(genreChoiceBox, 1, 3);
+        root.add(genreLabel, 0, 5);
+
+        root.add(genreChoiceBox, 1, 5);
         GridPane.setFillWidth(genreChoiceBox, true);
-        root.add(newGenreButton, 1, 4);
+        root.add(newGenreButton, 1, 6);
 
 
-        root.add(isTranslationCB, 0, 5);
-        root.add(translatorTF, 1, 6);
-        root.add(translatorLabel, 0, 6);
+        root.add(isTranslationCB, 0, 7);
+        root.add(translatorTF, 1, 8);
+        root.add(translatorLabel, 0, 8);
 
 
-        root.add(chooseFileButton, 0, 7);
-        root.add(linkToFileLabel, 0, 8,2,1);
+
 
         root.add(saveBookButton, 0, 9);
         infoLabel.setWrapText(true);
         infoLabel.setTextFill(Color.web("#ff0000", 0.8));
         root.add(infoLabel, 0, 10, 2,1);
 
-
-
+//        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Fiction book format v2.0 *.fb2", "*.fb2");
+//        textFileChooser.getExtensionFilters().addAll(extensionFilter);
 
         newGenreButton.setOnAction(eventAction ->{
             Optional<String> item = showInputTextDialog();
@@ -112,10 +119,36 @@ public class NewSourceView implements Viewable {
             }
         });
 
+        String fb2ext = "fb2";
+        String htmlext = "html";
+        String dir = "books";
         chooseFileButton.setOnAction(eventAction->{
+            File booksDir = new File(dir);
+            booksDir.mkdirs();
             File file =  textFileChooser.showOpenDialog(stage);
             if(file!=null){
-                linkToFileLabel.setText(file.getAbsolutePath());
+            String filename = file.getName();
+            String filePath = file.getAbsolutePath();
+            if(filename.endsWith("fb2")){
+                SimpleTransformer transformer = new SimpleTransformer();
+                String newFileName = booksDir.getPath()+ File.separator+filename.replace(fb2ext, htmlext);
+                logger.debug(newFileName);
+                transformer.transform(filePath, newFileName);
+                linkToFileLabel.setText(newFileName);
+
+            } else {
+
+                try {
+                    Path newPath = Paths.get(booksDir.getPath(), filename);
+                    Files.copy(file.toPath(), newPath);
+                    linkToFileLabel.setText(newPath.toString());
+                } catch (IOException e) {
+                    logger.warn("I can't copy file "+e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+
             }
 
         });
