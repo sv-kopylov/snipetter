@@ -13,6 +13,9 @@ import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.controllers.OneCategoryFeatureController;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 
@@ -32,7 +35,7 @@ public class OneCategoryFeatureView implements Viewable{
     private ChoiceBox<String> choiceBox;
     private Button sendToButton;
     private Button newFeatureButton;
-
+    private Comparator<String> comparator = (s1, s2)-> s1.toLowerCase().compareTo(s2.toLowerCase());
 
 
     public OneCategoryFeatureView(OneCategoryFeatureController oneCategoryFeatureController, FeaturesBank featuresBank) {
@@ -40,11 +43,15 @@ public class OneCategoryFeatureView implements Viewable{
         this.featuresBank = featuresBank;
         categoryLabel = new Label(oneCategoryFeatureController.getCategory().name());
         featureNamesList = FXCollections.observableArrayList(oneCategoryFeatureController.getAllFeatureValues());
+        Collections.sort(featureNamesList,comparator);
+
         choiceBox = new ChoiceBox<String>(featureNamesList);
         categoryLabel.setPrefWidth(120);
         choiceBox.setPrefWidth(140);
         sendToButton = new Button("->");
         newFeatureButton = new Button("new");
+
+
 
         sendToButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -62,6 +69,7 @@ public class OneCategoryFeatureView implements Viewable{
                 if(!oneCategoryFeatureController.isExist(item.get())){
                     oneCategoryFeatureController.addNewFeature(item.get());
                     featureNamesList.add(item.get());
+                    Collections.sort(featureNamesList,comparator);
 
                 } else {
                     logger.warn("feature "+item.get()+"already exists in catecory "+ oneCategoryFeatureController.getCategory().name());
