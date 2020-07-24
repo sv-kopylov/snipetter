@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.kopylov.snippeter.fetching.CSVSaver;
 
 public class MainMenuBar {
     private MenuBar menuBar = new MenuBar();
@@ -14,12 +15,16 @@ public class MainMenuBar {
     private MenuItem newSource = new MenuItem("Новый источник");
     private MenuItem chooseSource = new MenuItem("Выбрать источник");
 
+    private Menu utils = new Menu("Экспорт");
+    private MenuItem toCSV = new MenuItem("Сохранить в CSV");
+
 
 
 
     public MainMenuBar(Stage parent) {
         sources.getItems().addAll(newSource, chooseSource);
-        menuBar.getMenus().add(sources);
+        utils.getItems().addAll(toCSV);
+        menuBar.getMenus().addAll(sources, utils);
 
         newSource.setOnAction(event->{
             Stage dialog = new Stage();
@@ -37,6 +42,11 @@ public class MainMenuBar {
             Scene dialogScene = new Scene((Pane)new ChooseSourceView(dialog).getView(), 300, 420);
             dialog.setScene(dialogScene);
             dialog.show();
+        });
+
+        toCSV.setOnAction(event -> {
+            CSVSaver saver = new CSVSaver();
+            saver.saveDBToCSV("./snippets.csv");
         });
     }
 

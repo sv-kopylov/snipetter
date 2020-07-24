@@ -25,7 +25,7 @@ public class Snippet {
     private String processedSnippet;
 
     public Snippet(String snippet, Source source) {
-        this.snippet = snippet;
+        this.snippet = filter(snippet);
         this.source = source;
     }
 
@@ -33,4 +33,25 @@ public class Snippet {
     @JoinColumn(name="source_id")
     private Source source;
 
+    public Snippet() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Snippet snippet = (Snippet) o;
+
+        return id.equals(snippet.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    private String filter(String in){
+        return in.replaceAll("(\r|\n)"," ");
+    }
 }
