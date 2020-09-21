@@ -17,7 +17,6 @@ import ru.kopylov.snippeter.utils.SimpleTransformer;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -121,6 +120,7 @@ public class NewSourceView implements Viewable {
 
         String fb2ext = "fb2";
         String htmlext = "html";
+        String textext = "txt";
         String dir = "books";
         chooseFileButton.setOnAction(eventAction->{
             File booksDir = new File(dir);
@@ -132,8 +132,10 @@ public class NewSourceView implements Viewable {
             if(filename.endsWith("fb2")){
                 SimpleTransformer transformer = new SimpleTransformer();
                 String newFileName = booksDir.getPath()+ File.separator+filename.replace(fb2ext, htmlext);
+                String textFileName = booksDir.getPath()+ File.separator+filename.replace(fb2ext, textext);
                 logger.debug(newFileName);
-                transformer.transform(filePath, newFileName);
+                transformer.transform2html(filePath, newFileName);
+                transformer.transform2text(filePath, textFileName);
                 linkToFileLabel.setText(newFileName);
 
             } else {

@@ -18,8 +18,7 @@
 
         <properties>
                 <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-                <!--<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:./db/snipdb"/>-->
-                <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:E:/diploma/datas/001/db/snipdb"/>
+                <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:./db/snipdb"/>
                 <property name="javax.persistence.jdbc.user" value="sa"/>
                 <property name="javax.persistence.jdbc.password" value=""/>
                 <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>

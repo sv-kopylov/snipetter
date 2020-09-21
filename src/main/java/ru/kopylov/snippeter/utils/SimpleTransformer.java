@@ -16,21 +16,25 @@ import java.io.File;
 import java.net.URL;
 
 public class SimpleTransformer {
+    public static String FB2HTML = "xslt/FB2_2_html.xsl";
+    public static String FB2TEXT = "xslt/FB2_2_txt.xsl";
+
+
     private static Logger logger = Logger.getLogger(SimpleTransformer.class);
     public static void main(String[] args) {
         try {
             TransformerFactory tf = TransformerFactory.newInstance();
 //установка используемого XSL-преобразования
             SimpleTransformer main = new SimpleTransformer();
-            File file = main.getFileFromResources("FB2_2_html.xsl");
+            File file = main.getFileFromResources("FB2_2_txt.xsl");
             Transformer transformer = tf.newTransformer(new StreamSource(file));
 //установка исходного XML-документа и конечного XML-файла
 
             transformer.transform(
 
-                    new StreamSource("Гадкие лебеди.fb2"),
+                    new StreamSource("avtoasopom_po_galactike_D.Adams.fb2"),
 
-                    new StreamResult("Гадкие лебеди.html"));
+                    new StreamResult("avtoasopom_po_galactike_D.Adams.txt"));
 
             logger.info("xslt transformation complete");
 
@@ -40,12 +44,21 @@ public class SimpleTransformer {
         }
     }
 
-    public void transform(String inFilePath, String outFilePath){
+    public void transform2html(String inFilePath, String outFilePath){
+        transform(inFilePath, outFilePath,  FB2HTML);
+    }
+
+    public void transform2text(String inFilePath, String outFilePath){
+        transform(inFilePath, outFilePath,  FB2TEXT);
+    }
+
+
+    public void transform(String inFilePath, String outFilePath, String shema){
         try {
             TransformerFactory tf = TransformerFactory.newInstance();
 //установка используемого XSL-преобразования
             SimpleTransformer main = new SimpleTransformer();
-            File file = new File("xslt/FB2_2_html.xsl");
+            File file = new File(shema);
             Transformer transformer = tf.newTransformer(new StreamSource(file));
 //установка исходного XML-документа и конечного XML-файла
 
@@ -59,6 +72,8 @@ public class SimpleTransformer {
         }
 
     }
+
+
 
     private  File getFileFromResources(String fileName) {
 
