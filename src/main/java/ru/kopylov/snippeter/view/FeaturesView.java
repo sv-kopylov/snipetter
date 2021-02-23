@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
+import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.controllers.OneCategoryFeatureController;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.FeatureManager;
@@ -19,7 +20,9 @@ public class FeaturesView implements Viewable{
 
     private VBox rootLayout;
 
-    public FeaturesView(FeaturesBank featuresBank) {
+    public FeaturesView() {
+        Context ctx = Context.getInstance();
+        FeaturesBank featuresBank = ctx.<FeaturesBank>get(FeaturesBank.class);
 
         FeatureManager featureManager = new FeatureManager();
         rootLayout = new VBox();

@@ -7,7 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.log4j.Logger;
-import ru.kopylov.snippeter.utils.Context;
+import ru.kopylov.snippeter.context.Context;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -19,15 +19,10 @@ public class TextViewer implements Viewable{
     private WebView webView = new WebView();
     WebEngine engine;
 
-
-
     public TextViewer() {
         webView.setContextMenuEnabled(false);
         engine = webView.getEngine();
         createContextMenu(webView);
-
-
-
     }
 
 
@@ -50,13 +45,14 @@ public class TextViewer implements Viewable{
     }
 
     private void sendToSnippet(String snip){
-        SnippetSaveView snippetSaveView = (SnippetSaveView) Context.getInstance().get("snippetSaveView");
-        snippetSaveView.setText(snip);
+        ResearchView researchView = Context.getInstance().get(ResearchView.class);
+        researchView.setText(snip);
+        researchView.show();
     }
 
     private void createContextMenu(WebView webView) {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem send = new MenuItem("send");
+        MenuItem send = new MenuItem(Labels.TextView_SendCtxtMenuItem);
         send.setOnAction(e -> {
             String selection = (String) webView.getEngine()
                     .executeScript("window.getSelection().toString()");

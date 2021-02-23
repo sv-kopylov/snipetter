@@ -5,11 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.model.Feature;
-import ru.kopylov.snippeter.view.App;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class FeaturesBank {
     private static Logger logger = Logger.getLogger(FeaturesBank.class);
@@ -47,5 +42,4 @@ public class FeaturesBank {
     public ObservableList<Feature> getAllFeatures(){
         return list;
     }
-
 }

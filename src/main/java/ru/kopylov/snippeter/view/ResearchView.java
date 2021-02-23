@@ -4,23 +4,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.SnippetDTO;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Source;
-import ru.kopylov.snippeter.utils.Context;
-
-import javax.persistence.EntityManager;
+import ru.kopylov.snippeter.context.Context;
 
 
-public class SnippetSaveView implements Viewable {
-    private static Logger logger = Logger.getLogger(SnippetSaveView.class);
+public class ResearchView implements Viewable {
+    private static Logger logger = Logger.getLogger(ResearchView.class);
 
 // shared resources
     private FeaturesBank featuresBank;
@@ -33,24 +34,31 @@ public class SnippetSaveView implements Viewable {
     private ListView<Feature> listView;
     private Button flushButton;
     private Button remButton;
+    private Stage dialog;
+    Scene dialogScene;
 
-    public SnippetSaveView() {
 
-        featuresBank = new FeaturesBank();
+    public ResearchView() {
+        Context ctx = Context.getInstance();
 
-        snippetText = new Label("Здесь будет в меру длинный и красивый отрывок текста, который нужно будет исследовать");
-        snippetText.setStyle("-fx-border-color: black; -fx-background-color: white; -fx-font-size: 140%");
+        featuresBank = ctx.<FeaturesBank>get(FeaturesBank.class);
+        featuresView = ctx.<FeaturesView>get(FeaturesView.class);
+
+// Верхнее поле, содержащее отрывок
+        snippetText = new Label(Labels.ResearchView_SnipetTextPlaceholder);
+        snippetText.setStyle(Styles.ResearchView_TexstStyle);
         snippetText.setWrapText(true);
 
-        featuresView = new FeaturesView(featuresBank);
+//        Больше нигде не используется, в контекст не помещаю (пока?)
         snippetDTO = new SnippetDTO();
 
+//        Больше нигде не используется, в контекст не помещаю (пока?)
         listView = new ListView(featuresBank.getAllFeatures());
-        flushButton = new Button("save snip");
-        flushButton.setStyle("-fx-border-color: red;");
+        flushButton = new Button(Labels.ResearchView_FlushButtonText);
+        flushButton.setStyle(Styles.ResearchView_FlushButtonStyle);
         flushButton.setOnAction(flushButtonHandler);
 
-        remButton = new Button("rem");
+        remButton = new Button(Labels.ResearchView_RemButtonText);
         remButton.setOnAction(remButtonHandler);
 
 
@@ -67,12 +75,21 @@ public class SnippetSaveView implements Viewable {
 
         root.add(remButton, 3, 1);
         root.add(flushButton, 4, 1);
-        root.setStyle("-fx-border-color: black;");
+        root.setStyle(Styles.ResearchView_RootStyle);
 
-        Context.getInstance().put("snippetSaveView", this);
-
+// подготовка модального окна
+        dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(ctx.getPrimaryStage());
+        dialogScene = new Scene(root, 300, 420);
+        dialog.setScene(dialogScene);
     }
 
+// показ модального окна
+    public void show(){
+        dialog.show();
+    }
+// обработчики событий
     EventHandler<ActionEvent> remButtonHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -99,7 +116,6 @@ public class SnippetSaveView implements Viewable {
 
         }
     };
-
 
     @Override
     public Node getView() {

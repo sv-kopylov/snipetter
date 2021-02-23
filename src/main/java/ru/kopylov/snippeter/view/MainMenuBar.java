@@ -42,6 +42,7 @@ public class MainMenuBar {
             Scene dialogScene = new Scene((Pane)new ChooseSourceView(dialog).getView(), 300, 420);
             dialog.setScene(dialogScene);
             dialog.show();
+
         });
 
         toCSV.setOnAction(event -> {

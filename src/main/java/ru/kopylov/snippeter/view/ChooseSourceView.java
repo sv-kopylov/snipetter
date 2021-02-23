@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.management.SourceManager;
 import ru.kopylov.snippeter.model.Source;
-import ru.kopylov.snippeter.utils.Context;
+import ru.kopylov.snippeter.context.Context;
 
 public class ChooseSourceView implements Viewable {
     private static Logger logger = Logger.getLogger(ChooseSourceView.class);
@@ -22,7 +22,7 @@ public class ChooseSourceView implements Viewable {
     private Button sortByAuthor = new Button("по автору");
 
     public ChooseSourceView(Stage parent) {
-        TextViewer textViewer = (TextViewer) Context.getInstance().get("textViewer");
+        TextViewer textViewer = (TextViewer) Context.getInstance().get(TextViewer.class.getName());
         listView = new ListView<Source>(sourceManager.getSources());
         HBox hBox = new HBox();
         hBox.getChildren().addAll(sortByTitle, sortByAuthor);
@@ -37,8 +37,8 @@ public class ChooseSourceView implements Viewable {
                Source source = (Source) listView.getSelectionModel().getSelectedItem();
                logger.info(source+" selected");
                textViewer.setByURL(source.getLinkToFile());
-               SnippetSaveView snippetSaveView = (SnippetSaveView)Context.getInstance().get("snippetSaveView");
-               snippetSaveView.setSource(source);
+               ResearchView researchView = (ResearchView)Context.getInstance().get(ResearchView.class.getName());
+               researchView.setSource(source);
                parent.close();
 
             }

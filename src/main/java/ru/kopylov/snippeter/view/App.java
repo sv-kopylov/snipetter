@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import ru.kopylov.snippeter.utils.Context;
+import ru.kopylov.snippeter.context.ApplicationInitializer;
+import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
 
@@ -21,22 +22,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Snipetter");
-        EntityManagerHolder.getInstance().init("snip_pu");
+        primaryStage.setTitle("snipeter");
+        Context ctx = Context.getInstance();
+        ctx.setPrimaryStage(primaryStage);
 
+        ApplicationInitializer.init();
 
-
-        SnippetSaveView snippetSaveView = new SnippetSaveView();
         MainMenuBar mainMenuBar = new MainMenuBar(primaryStage);
-        TextViewer textViewer = new TextViewer();
-        Context.getInstance().put("textViewer",textViewer);
 
         GridPane mainPane = new GridPane();
         mainPane.setPadding(new Insets(20));
         mainPane.setHgap(10);
         mainPane.setVgap(10);
-        ColumnConstraints left = new ColumnConstraints(660);
 
+        ColumnConstraints left = new ColumnConstraints(660);
         ColumnConstraints right = new ColumnConstraints();
         right.setHgrow(Priority.ALWAYS);
 
@@ -49,19 +48,9 @@ public class App extends Application {
         mainPane.getRowConstraints().addAll(first, sec);
 
 
-
-        GridPane.setFillHeight(snippetSaveView.getView(), true);
-        GridPane.setFillHeight(textViewer.getView(), true);
-
+        GridPane.setFillHeight(ctx.<TextViewer>get(TextViewer.class).getView(), true);
         mainPane.add(mainMenuBar.getMenuBar(), 0, 0);
-        mainPane.add(snippetSaveView.getView(), 0, 1 );
-        mainPane.add(textViewer.getView(), 1, 0, 2, 2);
-
-
-
-
-
-
+        mainPane.add(ctx.<TextViewer>get(TextViewer.class).getView(), 1, 0, 2, 2);
 
 
         primaryStage.setOnCloseRequest(e -> shutDown());
