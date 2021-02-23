@@ -3,19 +3,11 @@ package ru.kopylov.snippeter.view;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import ru.kopylov.snippeter.controllers.SnippetController;
 import ru.kopylov.snippeter.utils.Context;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 
 public class App extends Application {
@@ -72,7 +64,7 @@ public class App extends Application {
 
 
 
-        primaryStage.setOnCloseRequest(e -> shutDoun());
+        primaryStage.setOnCloseRequest(e -> shutDown());
 
         primaryStage.setScene(new Scene((Pane)mainPane, 800, 600));
         primaryStage.show();
@@ -81,7 +73,7 @@ public class App extends Application {
 
 
 
-    private void shutDoun(){
+    private void shutDown(){
         logger.debug("Stopping");
         System.out.println("Stopping");
         EntityManagerHolder.getInstance().close();

@@ -41,7 +41,7 @@ public class FeatureManagerTest {
 
     @Test
     public void createFeature() throws UnsupportedEncodingException {
-        FeatureManager fm = new FeatureManager(em);
+        FeatureManager fm = new FeatureManager();
         fm.createFeature("EMOTION", "страх");
         fm.createFeature("EMOTION", "смирение");
         fm.createFeature("EMOTION", "радость");
@@ -52,7 +52,7 @@ public class FeatureManagerTest {
 
     @Test
     public void completteFeatures() {
-        FeatureManager fm = new FeatureManager(em);
+        FeatureManager fm = new FeatureManager();
         fm.completteFeatures();
         HashMap<Category, ArrayList<Feature>> a = fm.getFeatures();
 

@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -33,8 +34,8 @@ public class GenreManagerTest {
 
     @Test
     public void getGenres() {
-        GenreManager gm = new GenreManager(em);
-        ArrayList<Genre> a = gm.getGenres();
+        GenreManager gm = new GenreManager();
+        List<Genre> a = gm.getGenres();
         for(Genre g: a){
             System.out.println(g);
         }
@@ -43,7 +44,7 @@ public class GenreManagerTest {
 
     @Test
     public void addGenre() {
-        GenreManager gm = new GenreManager(em);
+        GenreManager gm = new GenreManager();
         gm.addGenre("Статья");
         gm.addGenre("Научная фантастика");
     }

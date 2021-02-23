@@ -1,6 +1,4 @@
 package ru.kopylov.snippeter.view;
-
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,16 +27,12 @@ public class SnippetSaveView implements Viewable {
     private SnippetDTO snippetDTO;
     private Source source;
 
-
     private GridPane root;
     private Label snippetText;
     private FeaturesView featuresView;
     private ListView<Feature> listView;
     private Button flushButton;
     private Button remButton;
-
-
-
 
     public SnippetSaveView() {
 
