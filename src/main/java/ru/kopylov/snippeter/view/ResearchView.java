@@ -1,4 +1,5 @@
 package ru.kopylov.snippeter.view;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,15 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.SnippetDTO;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Source;
-import ru.kopylov.snippeter.context.Context;
 
 
 public class ResearchView implements Viewable {
@@ -81,7 +81,7 @@ public class ResearchView implements Viewable {
         dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(ctx.getPrimaryStage());
-        dialogScene = new Scene(root, 300, 420);
+        dialogScene = new Scene(root, Styles.ResearchView_WindowWidth, Styles.ResearchView_WindowHeight);
         dialog.setScene(dialogScene);
     }
 

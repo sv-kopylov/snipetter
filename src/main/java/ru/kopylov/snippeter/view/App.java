@@ -49,17 +49,20 @@ public class App extends Application {
 
 
         GridPane.setFillHeight(ctx.<TextViewer>get(TextViewer.class).getView(), true);
-        mainPane.add(mainMenuBar.getMenuBar(), 0, 0);
-        mainPane.add(ctx.<TextViewer>get(TextViewer.class).getView(), 1, 0, 2, 2);
+        mainPane.add(mainMenuBar.getMenuBar(), 0, 0, 2, 1);
+        mainPane.add(ctx.<TextViewer>get(TextViewer.class).getView(), 0, 1, 2, 1);
 
 
         primaryStage.setOnCloseRequest(e -> shutDown());
 
-        primaryStage.setScene(new Scene((Pane)mainPane, 800, 600));
+        primaryStage.setScene(new Scene((Pane)mainPane, 1000, 600));
         primaryStage.show();
 
     }
 
+    private void completeMainScene(Stage primaryStage){
+
+    }
 
 
     private void shutDown(){
