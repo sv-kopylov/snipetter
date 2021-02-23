@@ -315,6 +315,14 @@
 		UL{ padding-left : 1em; margin-left: 0}
 		.epigraph{margin-right:5em; margin-left : 25%;}
 		DIV{font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; text-align : justify}
+		/* width */
+		::-webkit-scrollbar { width: 15px; }
+		/* Track */
+		::-webkit-scrollbar-track {background: #f1f1f1;}
+		/* Handle */
+		::-webkit-scrollbar-thumb {background: #888;}
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {background: #555;}
 	</xsl:template>
 	<xsl:template name="CSS_Style_Print">
 		A { color : #0002CC }
