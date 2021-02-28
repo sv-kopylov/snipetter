@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.management.GenreManager;
 import ru.kopylov.snippeter.management.SourceManager;
 import ru.kopylov.snippeter.model.Genre;
-import ru.kopylov.snippeter.utils.SimpleTransformer;
+import ru.kopylov.snippeter.text.SimpleTransformer;
 
 import java.io.File;
 import java.io.IOException;

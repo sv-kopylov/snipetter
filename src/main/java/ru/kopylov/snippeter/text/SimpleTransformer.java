@@ -1,16 +1,12 @@
-package ru.kopylov.snippeter.utils;
-
+package ru.kopylov.snippeter.text;
 
 
 import org.apache.log4j.Logger;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-
 import javax.xml.transform.TransformerFactory;
-
 import javax.xml.transform.stream.StreamResult;
-
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.net.URL;

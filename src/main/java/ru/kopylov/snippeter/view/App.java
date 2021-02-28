@@ -49,7 +49,10 @@ public class App extends Application {
 
 
         GridPane.setFillHeight(ctx.<TextViewer>get(TextViewer.class).getView(), true);
+
         mainPane.add(mainMenuBar.getMenuBar(), 0, 0, 2, 1);
+
+        // конкретная реализация зависит от того, что мы добавили в ApplicationInitializer
         mainPane.add(ctx.<TextViewer>get(TextViewer.class).getView(), 0, 1, 2, 1);
 
 

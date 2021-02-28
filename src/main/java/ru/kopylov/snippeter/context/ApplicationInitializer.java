@@ -6,6 +6,7 @@ import ru.kopylov.snippeter.utils.EntityManagerHolder;
 import ru.kopylov.snippeter.view.FeaturesView;
 import ru.kopylov.snippeter.view.ResearchView;
 import ru.kopylov.snippeter.view.TextViewer;
+import ru.kopylov.snippeter.view.TextViewerTextAreaImpl;
 
 /**
  * Здесь должны создаваться все постоянные объекты, инициализироваться, если тербуется, и помеещаться в контекст.
@@ -24,7 +25,7 @@ public class ApplicationInitializer {
         ctx.put(new FeaturesBank()); // перед FeaturesView и ResearchView
         ctx.put(new FeaturesView()); // перед ResearchView
         ctx.put(new ResearchView());
-        ctx.put(new TextViewer());
+        ctx.put(TextViewer.class.getName(),new TextViewerTextAreaImpl()); // добавляем по интерфейсу
 
     }
 }
