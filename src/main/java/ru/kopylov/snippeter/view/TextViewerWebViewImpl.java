@@ -1,5 +1,7 @@
 package ru.kopylov.snippeter.view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -24,6 +26,7 @@ public class TextViewerWebViewImpl implements TextViewer{
     private AnchorPane root;
     private Button back;
     private Button forward;
+    private WebHistory history;
 
 
 
@@ -36,6 +39,7 @@ public class TextViewerWebViewImpl implements TextViewer{
         back = new Button("<-");
         forward = new Button("->");
         makeButtonResponsive();
+        setButtonsDisable();
 
 
 
@@ -45,12 +49,20 @@ public class TextViewerWebViewImpl implements TextViewer{
         setAlignment(webView, 30., 0.,0.,0.);
         setAlignment(back,0.,0.);
         setAlignment(forward, 0.,42.);
+
+        history = engine.getHistory();
+        makeButtonsDisableAble(); // порядок имеет значение, должно вызываться после инициализации history
+    }
+
+
+    private void setButtonsDisable(){
+        back.setDisable(true);
+        forward.setDisable(true);
     }
 
     private void makeButtonResponsive() {
         back.setOnAction(event ->{
             try {
-                WebHistory history = engine.getHistory();
                 if(history!=null) {
                     history.go(-1);
                 }
@@ -60,7 +72,6 @@ public class TextViewerWebViewImpl implements TextViewer{
         });
         forward.setOnAction(event -> {
             try {
-                WebHistory history = engine.getHistory();
                 if(history!=null) {
                     history.go(1);
                 }
@@ -69,6 +80,38 @@ public class TextViewerWebViewImpl implements TextViewer{
             }
         });
     }
+    private void makeButtonsDisableAble(){
+        history.currentIndexProperty().addListener(new ChangeListener<Number>()
+        {
+            public void changed(ObservableValue<? extends Number> ov,
+                                final Number oldvalue, final Number newvalue)
+            {
+                int currentIndex = newvalue.intValue();
+
+                if (currentIndex <= 0)
+                {
+                    back.setDisable(true);
+                }
+                else
+                {
+                    back.setDisable(false);
+                }
+
+                if (currentIndex >= history.getEntries().size()-1)
+                {
+                    forward.setDisable(true);
+                }
+                else
+                {
+                    forward.setDisable(false);
+                }
+            }
+        });
+    }
+
+
+
+
 
 
     @Override
