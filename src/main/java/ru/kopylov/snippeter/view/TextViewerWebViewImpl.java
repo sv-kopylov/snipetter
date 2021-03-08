@@ -1,11 +1,13 @@
 package ru.kopylov.snippeter.view;
 
+import com.sun.webkit.WebPage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
@@ -15,18 +17,23 @@ import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.context.Context;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class TextViewerWebViewImpl implements TextViewer{
 
     private static Logger logger = Logger.getLogger(TextViewerWebViewImpl.class);
-    WebEngine engine;
+    private WebEngine engine;
     private WebView webView = new WebView();
     private AnchorPane root;
     private Button back;
     private Button forward;
     private WebHistory history;
+
+    private Button searchButton;
+    private TextField searchText;
+    private WebPage page;
 
 
 
@@ -52,6 +59,28 @@ public class TextViewerWebViewImpl implements TextViewer{
 
         history = engine.getHistory();
         makeButtonsDisableAble(); // порядок имеет значение, должно вызываться после инициализации history
+
+        searchButton = new Button("search");
+        searchText = new TextField();
+        setSearhProcessing();
+        root.getChildren().addAll(searchButton, searchText);
+        setAlignment(searchText, 0., 82.);
+        setAlignment(searchButton, 0., 260.);
+    }
+
+    private void setSearhProcessing() {
+       try {
+            Field pageField = engine.getClass().getDeclaredField("page");
+            pageField.setAccessible(true);
+            page = (com.sun.webkit.WebPage) pageField.get(engine);
+        } catch(Exception e) {
+
+        }
+        searchButton.setOnAction(event -> {
+            if(page!=null){
+                page.find(searchText.getText(), true, true, false);
+            }
+        });
     }
 
 
@@ -177,4 +206,17 @@ public class TextViewerWebViewImpl implements TextViewer{
         AnchorPane.setLeftAnchor(child, left);
 
     }
+
+    /*
+    WebView webView = new WebView();
+WebEngine engine = webView.getEngine();
+
+try {
+    Field pageField = engine.getClass().getDeclaredField("page");
+    pageField.setAccessible(true);
+
+    WebPage page = (com.sun.webkit.WebPage) pageField.get(engine);
+    page.find("query", true, true, false);
+} catch(Exception e) { /* log error could not access page  }
+     */
 }
