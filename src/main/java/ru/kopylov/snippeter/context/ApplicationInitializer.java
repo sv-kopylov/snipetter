@@ -1,6 +1,7 @@
 package ru.kopylov.snippeter.context;
 
 
+import javafx.scene.web.WebView;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 import ru.kopylov.snippeter.view.FeaturesView;
@@ -25,7 +26,10 @@ public class ApplicationInitializer {
         ctx.put(new FeaturesBank()); // перед FeaturesView и ResearchView
         ctx.put(new FeaturesView()); // перед ResearchView
         ctx.put(new ResearchView());
-        ctx.put(TextViewer.class.getName(),new TextViewerWebViewImpl()); // добавляем по интерфейсу
+
+        ctx.put(new WebView()); // сначала движок WebView а потом компонент его использующий TextViewer
+        ctx.put(TextViewer.class.getName(),new TextViewerWebViewImpl()); // добавляем TextViewer по интерфейсу
+
 
     }
 }
