@@ -32,8 +32,11 @@ public class TextViewerMenuPanel implements Viewable {
     private Button backButton;
     private Button forwardButton;
     private Button searchButton;
-    private Button goButton;
-    private Button savePosButton;
+    private Button toTopButton;
+    private Button fontBiggerButton;
+    private Button fontSmallerButton;
+
+    private double currentFontScale = 1.;
 
 
     //    текстовые поля
@@ -45,6 +48,7 @@ public class TextViewerMenuPanel implements Viewable {
         webView = ctx.get(WebView.class);
         engine = webView.getEngine();
         history = engine.getHistory();
+        history.setMaxSize(2);
         initPage();
 
 //      инициализируем визуальные компоненты
@@ -54,6 +58,12 @@ public class TextViewerMenuPanel implements Viewable {
         forwardButton.setDisable(true);  //  при запуске  кнопки навигации по истории отключены
         searchButton = new Button("search");
         searchText = new TextField();
+        toTopButton = new Button("top");
+        fontBiggerButton = new Button("+");
+        fontBiggerButton.setPrefWidth(32);
+        fontSmallerButton = new Button("-");
+        fontSmallerButton.setPrefWidth(32);
+
 
 //      добавляем обработку событий к визуальным компонентам
         makeButtonsDisableAble(); // отключение кнопок навигации по истории если идти некуда, порядок имеет значение, должно вызываться после инициализации history
@@ -67,6 +77,11 @@ public class TextViewerMenuPanel implements Viewable {
         topPanel.getChildren().add(searchText);
         topPanel.getChildren().add(searchButton);
         topPanel.getChildren().add(getSeparator());
+        topPanel.getChildren().add(toTopButton);
+        topPanel.getChildren().add(getSeparator());
+        topPanel.getChildren().add(fontBiggerButton);
+        topPanel.getChildren().add(fontSmallerButton);
+
 
     }
 
@@ -109,6 +124,24 @@ public class TextViewerMenuPanel implements Viewable {
             }
         });
 
+//        кнопка наверх
+        toTopButton.setOnAction(event->{
+            engine.executeScript("window.scrollTo( 0, 0);");
+        });
+//      кнопки размера шрифта
+        fontBiggerButton.setOnAction(event -> {
+            if(currentFontScale<10){
+                currentFontScale+=0.1;
+            }
+            webView.setFontScale(currentFontScale);
+        });
+        fontSmallerButton.setOnAction(event -> {
+            if(currentFontScale>0.1){
+                currentFontScale-=0.1;
+            }
+            webView.setFontScale(currentFontScale);
+        });
+
 
     }
 
@@ -116,6 +149,7 @@ public class TextViewerMenuPanel implements Viewable {
     private Separator getSeparator(){
         Separator sep = new Separator();
         sep.setOrientation(Orientation.VERTICAL);
+        sep.setStyle(Styles.TextViewerMenuPanel_BorderStyle);
         return sep;
     }
 

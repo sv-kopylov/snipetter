@@ -46,6 +46,9 @@ public class ChooseSourceView implements Viewable {
 
 
     }
+    public void updateSources(){
+        sourceManager.completeSources();
+    }
 
     @Override
     public Node getView() {

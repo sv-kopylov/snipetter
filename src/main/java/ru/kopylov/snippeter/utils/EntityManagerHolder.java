@@ -22,15 +22,16 @@ public class EntityManagerHolder {
     }
 
 
-
+    private EmTAProxy emTAProxy;
     private EntityManagerFactory emf;
     private  EntityManager entityManager;
 
 
     public void init (String puName){
         if(entityManager ==null){
-            emf = Persistence.createEntityManagerFactory( "snip_pu" );
+            emf = Persistence.createEntityManagerFactory( puName );
             entityManager = emf.createEntityManager();
+            emTAProxy = new EmTAProxy(entityManager);
         }
 
     }
@@ -53,5 +54,9 @@ public class EntityManagerHolder {
         } else {
             System.out.println("entity man is null");
         }
+    }
+
+    public EmTAProxy getEmTAProxy() {
+        return emTAProxy;
     }
 }

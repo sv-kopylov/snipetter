@@ -17,12 +17,13 @@ import java.util.Collections;
 @Setter
 public class SourceManager {
     private static Logger logger = Logger.getLogger(SourceManager.class);
-    private EntityManager em = EntityManagerHolder.getInstance().getEntityManager();
+    private EntityManager em;
     private EmTAProxy emProxy;
     private ObservableList<Source> sources = FXCollections.observableArrayList();
 
     public SourceManager() {
-        emProxy = new EmTAProxy(em);
+        em = EntityManagerHolder.getInstance().getEntityManager();
+        emProxy = EntityManagerHolder.getInstance().getEmTAProxy();
         completeSources();
     }
 
@@ -42,7 +43,8 @@ public class SourceManager {
         return source;
     }
 
-    private void completeSources(){
+    public void completeSources(){
+        sources.clear();
         emProxy.<Source>getAllInstancesStream(Source.class).forEach(s -> sources.add(s));
     }
 

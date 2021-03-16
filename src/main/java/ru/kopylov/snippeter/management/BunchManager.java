@@ -14,7 +14,11 @@ import java.util.HashMap;
 
 public class BunchManager {
     HashMap<Snippet,ArrayList<Feature>> map = new HashMap<>();
-    private EntityManager em = EntityManagerHolder.getInstance().getEntityManager();
+    private EntityManager em;
+
+    public BunchManager() {
+        em = EntityManagerHolder.getInstance().getEntityManager();
+    }
 
     public void fetchAllSnippets(){
         CriteriaBuilder cb = em.getCriteriaBuilder();

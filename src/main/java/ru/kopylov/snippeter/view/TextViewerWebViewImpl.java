@@ -35,12 +35,13 @@ public class TextViewerWebViewImpl implements TextViewer{
         webView.setContextMenuEnabled(false);
         engine = webView.getEngine();
         createContextMenu(webView);
+        webView.setPrefWidth(960);
 
         menuPanel = new TextViewerMenuPanel();
         root = new AnchorPane();
 
         root.getChildren().addAll(webView, menuPanel.getView());
-        setAlignment(webView, 30., 0.,0.,0.);
+        setAlignment(webView, 30., 0. , 0.);
         setAlignment(menuPanel.getView(),0.,0.);
 
 
@@ -100,10 +101,10 @@ public class TextViewerWebViewImpl implements TextViewer{
         AnchorPane.setRightAnchor(child, right);
     }
 
-    private void setAlignment(Node child, Double top, Double left,  Double right){
+    private void setAlignment(Node child, Double top, Double left,  Double bottom){
         AnchorPane.setTopAnchor(child, top);
         AnchorPane.setLeftAnchor(child, left);
-        AnchorPane.setRightAnchor(child, right);
+        AnchorPane.setBottomAnchor(child, bottom);
     }
     private void setAlignment(Node child, Double top, Double left){
         AnchorPane.setTopAnchor(child, top);
