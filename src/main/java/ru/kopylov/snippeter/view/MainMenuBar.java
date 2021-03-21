@@ -7,7 +7,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.fetching.CSVSaver;
 
 public class MainMenuBar {
@@ -20,10 +19,14 @@ public class MainMenuBar {
     private Menu utils = new Menu("Экспорт");
     private MenuItem toCSV = new MenuItem("Сохранить в CSV");
 
-    Stage viewerSettingsDialog;
-    Stage newSourceViewDialog;
-    Stage choseSourceViewDialog;
-    ChooseSourceView chooseSourceView;
+    private Stage viewerSettingsDialog;
+    private Stage newSourceViewDialog;
+    private Stage choseSourceViewDialog;
+
+
+    private ChooseSourceView chooseSourceView;
+    private ViewerSettingsView viewerSettingsView;
+
     private Menu settings = new Menu("Настройки");
     private MenuItem viewerSettings = new MenuItem("Настройки просмотра текста");
 
@@ -34,17 +37,17 @@ public class MainMenuBar {
         settings.getItems().addAll(viewerSettings);
         menuBar.getMenus().addAll(sources, utils, settings);
 
-        newSourceViewDialog = createStage(parent);
-        Pane newSourceViewPane = (Pane)new NewSourceView(newSourceViewDialog).getView();
-        setScene(newSourceViewDialog, newSourceViewPane);
+        newSourceViewDialog = createStage(parent); // создаем диалог
+        Pane newSourceViewPane = (Pane)new NewSourceView(newSourceViewDialog).getView(); // создаем вид (панель) для диалога
+        setScene(newSourceViewDialog, newSourceViewPane); // устанавливаем вид в диалог
 
-        choseSourceViewDialog = createStage(parent);
-        chooseSourceView = new ChooseSourceView(choseSourceViewDialog);
-        Pane chooseViewPane = (Pane) chooseSourceView.getView();
-        setScene(choseSourceViewDialog, chooseViewPane);
+        choseSourceViewDialog = createStage(parent); // создаем диалог
+        chooseSourceView = new ChooseSourceView(choseSourceViewDialog); // отдельно создаем класс выбора источника для управления внутренним состоянием
+        Pane chooseViewPane = (Pane) chooseSourceView.getView();// создаем вид (панель) для диалога
+        setScene(choseSourceViewDialog, chooseViewPane); // устанавливаем вид в диалог
 
-        ViewerSettingsView vsw = Context.getInstance().get(ViewerSettingsView.class);
-        viewerSettingsDialog = createStageAndSetScene((Pane)vsw.getView(), parent);
+        viewerSettingsView = new ViewerSettingsView();
+        viewerSettingsDialog = createStageAndSetScene((Pane)viewerSettingsView.getView(), parent);
 
 
         newSource.setOnAction(event->{
@@ -62,6 +65,7 @@ public class MainMenuBar {
         });
 
         viewerSettings.setOnAction(event -> {
+            viewerSettingsView.updateSettings();
             viewerSettingsDialog.show();
         });
     }

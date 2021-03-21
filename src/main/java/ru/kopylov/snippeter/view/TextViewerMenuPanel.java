@@ -14,6 +14,7 @@ import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.context.Context;
+import ru.kopylov.snippeter.model.ViewerSettings;
 
 import java.lang.reflect.Field;
 
@@ -36,7 +37,7 @@ public class TextViewerMenuPanel implements Viewable {
     private Button fontBiggerButton;
     private Button fontSmallerButton;
 
-    private double currentFontScale = 1.;
+
 
 
     //    текстовые поля
@@ -50,6 +51,7 @@ public class TextViewerMenuPanel implements Viewable {
         history = engine.getHistory();
         history.setMaxSize(2);
         initPage();
+
 
 //      инициализируем визуальные компоненты
         backButton = new Button("<-");
@@ -128,18 +130,26 @@ public class TextViewerMenuPanel implements Viewable {
         toTopButton.setOnAction(event->{
             engine.executeScript("window.scrollTo( 0, 0);");
         });
+
 //      кнопки размера шрифта
         fontBiggerButton.setOnAction(event -> {
-            if(currentFontScale<10){
-                currentFontScale+=0.1;
-            }
+            double currentFontScale = getSettings().getFontScale();
+            currentFontScale+=0.1;
+            getSettings().setFontScale(currentFontScale);
+// если прошло валидацию сеттером
+            currentFontScale = getSettings().getFontScale();
             webView.setFontScale(currentFontScale);
+//            TODO сохранять ли сразу в базу ?
         });
+
         fontSmallerButton.setOnAction(event -> {
-            if(currentFontScale>0.1){
-                currentFontScale-=0.1;
-            }
+            double currentFontScale = getSettings().getFontScale();
+            currentFontScale-=0.1;
+            getSettings().setFontScale(currentFontScale);
+// если прошло валидацию сеттером
+            currentFontScale = getSettings().getFontScale();
             webView.setFontScale(currentFontScale);
+//            TODO сохранять ли сразу в базу ?
         });
 
 
@@ -180,19 +190,7 @@ public class TextViewerMenuPanel implements Viewable {
     }
 
 
-/*
-    goButton = new Button("goto");
-        goButton.setOnAction(event -> {
-        engine.executeScript("window.scrollTo( 0, "+pos+" );");
-    });
-        root.getChildren().addAll(goButton);
-    setAlignment(goButton, 0., 360.);
-
-    savePosButton = new Button("save_pos");
-        savePosButton.setOnAction(e->{
-        pos = (int)engine.executeScript("window.scrollY");
-    });
-        root.getChildren().addAll(savePosButton);
-    setAlignment(savePosButton, 0., 420.);
-*/
+    private ViewerSettings getSettings(){
+        return ctx.get(ViewerSettings.class);
+    }
 }

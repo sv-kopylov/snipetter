@@ -5,7 +5,10 @@ import javafx.scene.web.WebView;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.SettingsManager;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
-import ru.kopylov.snippeter.view.*;
+import ru.kopylov.snippeter.view.FeaturesView;
+import ru.kopylov.snippeter.view.ResearchView;
+import ru.kopylov.snippeter.view.TextViewer;
+import ru.kopylov.snippeter.view.TextViewerWebViewImpl;
 
 /**
  * Здесь должны создаваться все постоянные объекты, инициализироваться, если тербуется, и помеещаться в контекст.
@@ -30,12 +33,15 @@ public class ApplicationInitializer {
         ctx.put(new ResearchView());
 
         ctx.put(new WebView()); // сначала движок WebView а потом компонент его использующий TextViewer
-        ctx.put(TextViewer.class.getName(),new TextViewerWebViewImpl()); // добавляем TextViewer по интерфейсу
+        TextViewerWebViewImpl textViewerWebView = new TextViewerWebViewImpl();
+        ctx.put(TextViewer.class.getName(),textViewerWebView); // добавляем TextViewer по интерфейсу
 //    фетчинг настроек если они есть, если нет то создается новый экземпляр
         SettingsManager settingsManager = new SettingsManager();
         ctx.put(settingsManager); // менеджер настроек
-//        ctx.put(settingsManager.getDefaultSettings());
-        ctx.put(new ViewerSettingsView()); // окно настроек
+        ctx.put(settingsManager.getDefaultSettings()); // сами настройки
+        textViewerWebView.applySettings(); // применяем настройки как только они получены из базы
+
+
 
 
 

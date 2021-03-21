@@ -11,15 +11,38 @@ import javax.persistence.Id;
 @Entity
 public class ViewerSettings {
 
+    public static double MAX_FONT_SCALE = 10;
+
     @Id
+    @Getter
+    @Setter
     private String name = "default";
 
+    @Getter
     private double fontScale = 1.;
-    private boolean isAllScreenWidth = false;
+
+
+    @Getter
     private double textViewWidth = 960.;
+
+    @Getter
     private double leftAlignment = 0.;
 
-    private double startingWindowWidth = 0.;
-    private double startingWindowHeight = 0.;
 
+    public void setFontScale(double fontScale) {
+        if(fontScale>0 && fontScale<=MAX_FONT_SCALE){
+            this.fontScale = fontScale;
+        }
+
+    }
+
+    public void setTextViewWidth(double textViewWidth) {
+        if(textViewWidth>0)
+        this.textViewWidth = textViewWidth;
+    }
+
+    public void setLeftAlignment(double leftAlignment) {
+        if(leftAlignment>0)
+        this.leftAlignment = leftAlignment;
+    }
 }

@@ -48,6 +48,11 @@ public class TextViewerTextAreaImpl implements TextViewer {
     }
 
     @Override
+    public void applySettings() {
+
+    }
+
+    @Override
     public Node getView() {
         return root;
     }

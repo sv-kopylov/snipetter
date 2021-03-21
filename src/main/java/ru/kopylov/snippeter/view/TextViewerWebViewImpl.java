@@ -9,12 +9,15 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.context.Context;
+import ru.kopylov.snippeter.model.ViewerSettings;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class TextViewerWebViewImpl implements TextViewer{
+
+    private final double gap4menuPanel = 30.;
 //
     private static Logger logger = Logger.getLogger(TextViewerWebViewImpl.class);
     TextViewerMenuPanel menuPanel;
@@ -41,9 +44,17 @@ public class TextViewerWebViewImpl implements TextViewer{
         root = new AnchorPane();
 
         root.getChildren().addAll(webView, menuPanel.getView());
-        setAlignment(webView, 30., 0. , 0.);
+        setAlignment(webView, gap4menuPanel, 0. , 0.);
         setAlignment(menuPanel.getView(),0.,0.);
 
+
+    }
+    @Override
+    public void applySettings(){
+
+        webView.setPrefWidth(getSettings().getTextViewWidth());
+        setAlignment(webView, gap4menuPanel, getSettings().getLeftAlignment() , 0.);
+        webView.setFontScale(getSettings().getFontScale());
 
     }
 
@@ -110,6 +121,10 @@ public class TextViewerWebViewImpl implements TextViewer{
         AnchorPane.setTopAnchor(child, top);
         AnchorPane.setLeftAnchor(child, left);
 
+    }
+
+    private ViewerSettings getSettings(){
+        return ctx.get(ViewerSettings.class);
     }
 
 
