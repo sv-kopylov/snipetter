@@ -20,7 +20,7 @@ public class Snippet {
 //    позиции отрывка в произведении
     private long position=-1;
 
-    @Column(columnDefinition="varchar(1024)")
+    @Column(columnDefinition="varchar(4096)")
     private String snippet;
     private String processedSnippet;
 

@@ -15,6 +15,7 @@
         <class>ru.kopylov.snippeter.model.Snippet</class>
         <class>ru.kopylov.snippeter.model.SnippetFeatureBunch</class>
         <class>ru.kopylov.snippeter.model.ViewerSettings</class>
+        <class>ru.kopylov.snippeter.model.Bookmark</class>
 
 
         <properties>

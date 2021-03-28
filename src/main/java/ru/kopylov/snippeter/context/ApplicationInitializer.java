@@ -3,6 +3,7 @@ package ru.kopylov.snippeter.context;
 
 import javafx.scene.web.WebView;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
+import ru.kopylov.snippeter.management.BookmarkManager;
 import ru.kopylov.snippeter.management.SettingsManager;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 import ru.kopylov.snippeter.view.FeaturesView;
@@ -27,7 +28,7 @@ public class ApplicationInitializer {
 
 //  добавление всех компонентов в контекст
 
-
+        ctx.put(new BookmarkManager());
         ctx.put(new FeaturesBank()); // перед FeaturesView и ResearchView
         ctx.put(new FeaturesView()); // перед ResearchView
         ctx.put(new ResearchView());

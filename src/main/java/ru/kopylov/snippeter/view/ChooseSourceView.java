@@ -37,8 +37,9 @@ public class ChooseSourceView implements Viewable {
                Source source = (Source) listView.getSelectionModel().getSelectedItem();
                logger.info(source+" selected");
                textViewerWebViewImpl.setByURL(source.getLinkToFile());
-               ResearchView researchView = (ResearchView)Context.getInstance().get(ResearchView.class.getName());
+               ResearchView researchView = Context.getInstance().get(ResearchView.class);
                researchView.setSource(source);
+               Context.getInstance().put(source);
                parent.close();
 
             }

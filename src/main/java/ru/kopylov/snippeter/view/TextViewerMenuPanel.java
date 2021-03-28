@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -36,8 +37,10 @@ public class TextViewerMenuPanel implements Viewable {
     private Button toTopButton;
     private Button fontBiggerButton;
     private Button fontSmallerButton;
+    private Button getYButton;
 
-
+    private MenuButton bookmarksMenuButton;
+    private BookmarksView bookmarksView;
 
 
     //    текстовые поля
@@ -65,6 +68,8 @@ public class TextViewerMenuPanel implements Viewable {
         fontBiggerButton.setPrefWidth(32);
         fontSmallerButton = new Button("-");
         fontSmallerButton.setPrefWidth(32);
+        getYButton = new Button("logY");
+
 
 
 //      добавляем обработку событий к визуальным компонентам
@@ -83,6 +88,8 @@ public class TextViewerMenuPanel implements Viewable {
         topPanel.getChildren().add(getSeparator());
         topPanel.getChildren().add(fontBiggerButton);
         topPanel.getChildren().add(fontSmallerButton);
+        topPanel.getChildren().add(getYButton);
+
 
 
     }
@@ -98,6 +105,9 @@ public class TextViewerMenuPanel implements Viewable {
         }
     }
 
+    /**
+     * Объединяет установку действий для всех элементов
+     */
     private void setActionProcessingToAllElements() {
 //        навигация по истории назад
         backButton.setOnAction(event -> {
@@ -152,8 +162,19 @@ public class TextViewerMenuPanel implements Viewable {
 //            TODO сохранять ли сразу в базу ?
         });
 
+        getYButton.setOnAction(event -> {
+            logger.info("document.body.scrollHeight"+engine.executeScript("document.body.scrollHeight;"));
+
+        });
+
+
 
     }
+
+    public int getYPos(){
+        return (int)engine.executeScript("window.scrollY;");
+    }
+
 
 //  делаем разделители
     private Separator getSeparator(){

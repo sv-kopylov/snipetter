@@ -29,10 +29,6 @@ public class TextViewerWebViewImpl implements TextViewer{
 //    панели
     private AnchorPane root;
 
-
-
-
-
     public TextViewerWebViewImpl() {
         webView = ctx.get(WebView.class);
         webView.setContextMenuEnabled(false);
@@ -58,7 +54,6 @@ public class TextViewerWebViewImpl implements TextViewer{
 
     }
 
-
      @Override
     public void setByURL(String path){
         File file = new File(path);
@@ -71,8 +66,6 @@ public class TextViewerWebViewImpl implements TextViewer{
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public Node getView() {
@@ -126,6 +119,16 @@ public class TextViewerWebViewImpl implements TextViewer{
     private ViewerSettings getSettings(){
         return ctx.get(ViewerSettings.class);
     }
+    public int getYPos(){
+        return (int)engine.executeScript("window.scrollY;");
+    }
+    public int getMaxYPos(){
+        return (int)engine.executeScript("document.body.scrollHeight;");
+    }
+    public void scrollTo(int pos){
+        String script = String.format("window.scrollTo(0, %d);", pos);
+        engine.executeScript(script);
 
+    }
 
 }

@@ -27,6 +27,16 @@ public class EmTAProxy {
 
     }
 
+    public void merge(Object entity){
+        if(!em.getTransaction().isActive()){
+            em.getTransaction().begin();
+        }
+        em.merge(entity);
+        em.flush();
+        em.getTransaction().commit();
+
+    }
+
     public <T> Stream <T> getAllInstancesStream (Class clazz){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(clazz);

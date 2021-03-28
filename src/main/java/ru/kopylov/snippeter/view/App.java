@@ -73,6 +73,8 @@ public class App extends Application {
     private void shutDown(){
         logger.debug("Stopping");
         System.out.println("Stopping");
+        BookmarksView bookmarksView = Context.getInstance().get(BookmarksView.class);
+        bookmarksView.saveBookmark("Остановился на...");
         EntityManagerHolder.getInstance().close();
 
     }
