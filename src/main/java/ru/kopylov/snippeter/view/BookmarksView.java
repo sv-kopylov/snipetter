@@ -14,6 +14,7 @@ import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.management.BookmarkManager;
 import ru.kopylov.snippeter.model.Bookmark;
 import ru.kopylov.snippeter.model.Source;
+import ru.kopylov.snippeter.model.ViewerSettings;
 
 import java.util.Optional;
 
@@ -43,42 +44,25 @@ public class BookmarksView implements Viewable {
             if (action.getClickCount() == 2) {
                 Bookmark bookmark = listView.getSelectionModel().getSelectedItem();
                 TextViewerWebViewImpl textViewerWebView = ctx.get(TextViewer.class);
-                textViewerWebView.scrollTo(calcPosition(bookmark));
+                textViewerWebView.scrollTo(bookmark.getPosition());
                 parent.close();
             }
         });
         ctx.put(this);
     }
 
-    private int calcPosition(Bookmark bookmark){
-        TextViewerWebViewImpl textViewerWebView = ctx.get(TextViewer.class);
-        int currentMaxPos =  textViewerWebView.getMaxYPos();
-        if(Math.abs(currentMaxPos-bookmark.getMaxPosition()) <10){
-            logger.info("no height changed");
-            logger.info("prev height "+ bookmark.getMaxPosition());
-            logger.info("prev pos "+ bookmark.getPosition());
-            logger.info("curr height "+ currentMaxPos);
-            return bookmark.getPosition();
-        }else {
-            double rate = (double) currentMaxPos / bookmark.getMaxPosition();
-            logger.info("prev height "+ bookmark.getMaxPosition());
-            logger.info("prev pos "+ bookmark.getPosition());
-            logger.info("curr height "+ currentMaxPos);
-            logger.info("curr height "+ (int)(bookmark.getPosition()*rate));
-            logger.info("rate"+ rate);
-            return  (int)(bookmark.getPosition()*rate);
-        }
-    }
 
     public void saveBookmark(String name) {
         TextViewerWebViewImpl textViewerWebView = ctx.get(TextViewer.class);
         int pos = textViewerWebView.getYPos();
-        int maxPos = textViewerWebView.getMaxYPos();
+        ViewerSettings settings = ctx.get(ViewerSettings.class);
+        double width = settings.getTextViewWidth();
+        double fontScale = settings.getFontScale();
         Source source = ctx.get(Source.class);
         if (source != null) {
-            if (pos > 0 && maxPos>1) {
+            if (pos > 0 ) {
                 try {
-                    manager.merge(new Bookmark(name, source, pos, maxPos));
+                    manager.merge(new Bookmark(name, source, pos, width, fontScale));
                 } catch (Exception e) {
                     logger.warn(e.getMessage());
                 }

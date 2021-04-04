@@ -21,22 +21,25 @@ public class Bookmark {
     private Source source;
 
     private int position;
-
-    private int maxPosition;
+    private double width;
+    private double fontScale;
 
     public Bookmark() {
     }
 
-    public Bookmark(String name, Source source, int position, int maxPosition) {
+    public Bookmark(String name, Source source, int position, double width, double fontScale) {
         this.name = name;
         this.source = source;
         this.position = position;
-        this.maxPosition = maxPosition;
+        this.width = width;
+        this.fontScale = fontScale;
     }
+
+
 
     @Override
     public String toString() {
         String shortName = name.length()>20?name.substring(0, 20):name;
-        return  shortName +" "+ position;
+        return String.format("%s\t[w:%.0f, f:%.1f]", shortName, width, fontScale);
     }
 }
