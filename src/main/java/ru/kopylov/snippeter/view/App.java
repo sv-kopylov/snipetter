@@ -57,7 +57,7 @@ public class App extends Application {
         mainPane.add(textViewer.getView(), 0, 1, 2, 1);
 
 
-
+        primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(e -> shutDown());
 
         primaryStage.setScene(new Scene((Pane)mainPane, 1000, 600));

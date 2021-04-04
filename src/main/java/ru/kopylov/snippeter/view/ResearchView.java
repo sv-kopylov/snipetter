@@ -7,9 +7,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
@@ -18,6 +18,7 @@ import ru.kopylov.snippeter.controllers.FeaturesBank;
 import ru.kopylov.snippeter.management.SnippetDTO;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Source;
+import ru.kopylov.snippeter.utils.AnghorBinder;
 
 
 public class ResearchView implements Viewable {
@@ -28,8 +29,8 @@ public class ResearchView implements Viewable {
     private SnippetDTO snippetDTO;
     private Source source;
 
-    private GridPane root;
-    private Label snippetText;
+    private AnchorPane root;
+    private TextArea snippetText;
     private FeaturesView featuresView;
     private ListView<Feature> listView;
     private Button flushButton;
@@ -45,7 +46,8 @@ public class ResearchView implements Viewable {
         featuresView = ctx.<FeaturesView>get(FeaturesView.class);
 
 // Верхнее поле, содержащее отрывок
-        snippetText = new Label(Labels.ResearchView_SnipetTextPlaceholder);
+        snippetText = new TextArea(Labels.ResearchView_SnipetTextPlaceholder);
+        snippetText.setPrefHeight(130);
         snippetText.setStyle(Styles.ResearchView_TexstStyle);
         snippetText.setWrapText(true);
 
@@ -61,20 +63,17 @@ public class ResearchView implements Viewable {
         remButton = new Button(Labels.ResearchView_RemButtonText);
         remButton.setOnAction(remButtonHandler);
 
-
-        root = new GridPane();
+        root = new AnchorPane();
+        Node featuresViewView = featuresView.getView();
+        root.getChildren().addAll(snippetText, featuresViewView, listView, remButton, flushButton);
 //        root.setGridLinesVisible(true);
         root.setPadding(new Insets(20));
-        root.setHgap(10);
-        root.setVgap(10);
+        AnghorBinder.bind(snippetText, 10.,10.,null, 10.);
+        AnghorBinder.bind(featuresViewView, 150.,10.,10., null);
+        AnghorBinder.bind(flushButton, 150., 450.,null,null);
+        AnghorBinder.bind(remButton, 150., 550.,null,null);
+        AnghorBinder.bind(listView, 190.,450.,10., 10.);
 
-
-        root.add(snippetText, 0,0,5,1);
-        root.add(featuresView.getView(),0,1, 3, 4);
-        root.add(listView, 3, 2,2,3);
-
-        root.add(remButton, 3, 1);
-        root.add(flushButton, 4, 1);
         root.setStyle(Styles.ResearchView_RootStyle);
 
 // подготовка модального окна
