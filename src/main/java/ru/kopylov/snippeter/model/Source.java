@@ -26,7 +26,7 @@ public class Source {
     private int year;
     private boolean isTranslation;
 
-    @ManyToOne(optional=false, cascade= CascadeType.ALL)
+    @ManyToOne(optional=false)
     @JoinColumn(name="genre_id")
     private Genre genre;
 

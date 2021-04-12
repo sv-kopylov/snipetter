@@ -16,7 +16,7 @@ public class Bookmark {
     @Column(columnDefinition="varchar(128)")
     private String name;
 
-    @ManyToOne(optional=false, cascade= CascadeType.ALL)
+    @ManyToOne(optional=false)
     @JoinColumn(name="source_id")
     private Source source;
 

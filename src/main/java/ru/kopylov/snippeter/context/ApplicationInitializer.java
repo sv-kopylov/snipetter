@@ -26,7 +26,7 @@ public class ApplicationInitializer {
 
 
 
-//  добавление всех компонентов в контекст
+//  добавление компонентов в контекст
 
         ctx.put(new BookmarkManager());
         ctx.put(new FeaturesBank()); // перед FeaturesView и ResearchView

@@ -11,7 +11,7 @@ public class Styles {
     public static String TextView_TextParams = "-fx-font-size: 15px; ";
 
     public static int ResearchView_WindowWidth = 720;
-    public static int ResearchView_WindowHeight = 690;
+    public static int ResearchView_WindowHeight = 800;
 
 
     public static String TextViewerMenuPanel_BorderStyle = "-fx-background-color: #00bfff;";

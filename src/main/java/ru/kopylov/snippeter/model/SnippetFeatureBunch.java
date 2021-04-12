@@ -1,8 +1,5 @@
 package ru.kopylov.snippeter.model;
 
-import ru.kopylov.snippeter.model.Feature;
-import ru.kopylov.snippeter.model.Snippet;
-
 import javax.persistence.*;
 @Entity
 public class SnippetFeatureBunch {
@@ -11,11 +8,11 @@ public class SnippetFeatureBunch {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(optional=false, cascade= CascadeType.ALL)
+    @ManyToOne(optional=false)
     @JoinColumn(name="snippet_id")
     private Snippet snippet;
 
-    @ManyToOne(optional=false, cascade= CascadeType.ALL)
+    @ManyToOne(optional=false)
     @JoinColumn(name="feature_id")
     private Feature feature;
 

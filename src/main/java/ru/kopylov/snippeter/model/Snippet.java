@@ -29,7 +29,7 @@ public class Snippet {
         this.source = source;
     }
 
-    @ManyToOne(optional=false, cascade= CascadeType.ALL)
+    @ManyToOne(optional=false)
     @JoinColumn(name="source_id")
     private Source source;
 

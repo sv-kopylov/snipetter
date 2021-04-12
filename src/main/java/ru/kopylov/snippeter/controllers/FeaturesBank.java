@@ -6,6 +6,9 @@ import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.model.Feature;
 
+/**
+ * Класс для работы с фичами в рантайме
+ */
 public class FeaturesBank {
     private static Logger logger = Logger.getLogger(FeaturesBank.class);
     private ObservableList<Feature> list = FXCollections.observableArrayList();

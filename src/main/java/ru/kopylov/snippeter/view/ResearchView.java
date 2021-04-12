@@ -36,8 +36,39 @@ public class ResearchView implements Viewable {
     private Button flushButton;
     private Button remButton;
     private Stage dialog;
+    private AliasView aliasView;
     Scene dialogScene;
+// обработчики событий
+   private EventHandler<ActionEvent> remButtonHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            ObservableList<Feature> items = listView.getSelectionModel().getSelectedItems();
+            for(Feature f: items){
+                featuresBank.removeFeature(f);
+            }
+        }
+    };
 
+// показ модального окна
+    public void show(){
+        dialog.show();
+    }
+    private EventHandler<ActionEvent> flushButtonHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String txt = snippetText.getText();
+
+            if(txt!=null&&txt.length()>0&&source!=null&&featuresBank.getAllFeatures().size()>0){
+                    snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
+                    setText("");
+                    featuresBank.clear();
+            } else {
+                logger.warn("Attempt to save bad snippet");
+            }
+
+            dialog.hide();
+        }
+    };
 
     public ResearchView() {
         Context ctx = Context.getInstance();
@@ -65,13 +96,19 @@ public class ResearchView implements Viewable {
 
         root = new AnchorPane();
         Node featuresViewView = featuresView.getView();
-        root.getChildren().addAll(snippetText, featuresViewView, listView, remButton, flushButton);
+        aliasView = new AliasView();
+
+        root.getChildren().addAll(snippetText, aliasView.getView(), featuresViewView, listView, remButton, flushButton);
+
+
+
 //        root.setGridLinesVisible(true);
         root.setPadding(new Insets(20));
         AnghorBinder.bind(snippetText, 10.,10.,null, 10.);
-        AnghorBinder.bind(featuresViewView, 150.,10.,10., null);
-        AnghorBinder.bind(flushButton, 150., 450.,null,null);
-        AnghorBinder.bind(remButton, 150., 550.,null,null);
+        AnghorBinder.bind(aliasView.getView(), 150.,10.,null, null);
+        AnghorBinder.bind(featuresViewView, 270.,10.,10., null);
+        AnghorBinder.bind(flushButton, 150., 500.,null,null);
+        AnghorBinder.bind(remButton, 150., 450.,null,null);
         AnghorBinder.bind(listView, 190.,450.,10., 10.);
 
         root.setStyle(Styles.ResearchView_RootStyle);
@@ -83,38 +120,6 @@ public class ResearchView implements Viewable {
         dialogScene = new Scene(root, Styles.ResearchView_WindowWidth, Styles.ResearchView_WindowHeight);
         dialog.setScene(dialogScene);
     }
-
-// показ модального окна
-    public void show(){
-        dialog.show();
-    }
-// обработчики событий
-    EventHandler<ActionEvent> remButtonHandler = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            ObservableList<Feature> items = listView.getSelectionModel().getSelectedItems();
-            for(Feature f: items){
-                featuresBank.removeFeature(f);
-            }
-        }
-    };
-
-    EventHandler<ActionEvent> flushButtonHandler = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String txt = snippetText.getText();
-
-            if(txt!=null&&txt.length()>0&&source!=null&&featuresBank.getAllFeatures().size()>0){
-                    snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
-                    setText("");
-                    featuresBank.clear();
-            } else {
-                logger.warn("Attempt to save bad snippet");
-            }
-
-
-        }
-    };
 
     @Override
     public Node getView() {

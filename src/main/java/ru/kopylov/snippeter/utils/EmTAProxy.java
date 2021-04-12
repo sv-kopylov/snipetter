@@ -37,6 +37,15 @@ public class EmTAProxy {
 
     }
 
+    public void delete(Object entity){
+        if(!em.getTransaction().isActive()){
+            em.getTransaction().begin();
+        }
+        em.remove(entity);
+        em.flush();
+        em.getTransaction().commit();
+    }
+
     public <T> Stream <T> getAllInstancesStream (Class clazz){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(clazz);

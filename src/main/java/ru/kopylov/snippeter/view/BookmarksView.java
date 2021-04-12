@@ -86,6 +86,7 @@ public class BookmarksView implements Viewable {
         return root;
     }
 
+//    TODO переделать на DialogShower
     private Optional<String> showInputTextDialog() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Новая закладка");

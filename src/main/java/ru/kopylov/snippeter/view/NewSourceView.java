@@ -170,6 +170,7 @@ public class NewSourceView implements Viewable {
         });
 
     }
+    //    TODO переделать на DialogShower
     private  Optional<String>  showInputTextDialog() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Новый жанр");
