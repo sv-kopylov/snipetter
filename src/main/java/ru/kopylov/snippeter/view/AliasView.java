@@ -4,10 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ru.kopylov.snippeter.context.Context;
@@ -36,9 +33,17 @@ public class AliasView implements Viewable{
 
     private Map<String, List<Feature>> cachedMap;
     private EventHandler<ActionEvent> saveButtonEventHandler = event -> {
+        ObservableList<Feature> features = getFeaturesBank().getAllFeatures();
+        if(features.size()==0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Предупреждение!");
+            alert.setHeaderText("Не выбрано ни одной фичи!");
+            alert.setContentText("Хоть одна фича должна быть правом окне!");
+            alert.showAndWait();
+            return;
+        }
         Optional<String> name = dialogShower.showInputTextDialog();
         if(name.isPresent()){
-            ObservableList<Feature> features = getFeaturesBank().getAllFeatures();
             aliasManager.saveAliases(name.get(), features);
         }
         updateAliasesList();

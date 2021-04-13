@@ -73,9 +73,10 @@ public class ViewerSettingsView implements Viewable{
 
 //    обновляем значение полей в менюшке
     public void updateSettings(){
-        fontScaleTextField.setText(String.format("%.2f", getSettings().getFontScale()));
-        textViewWidthTextField.setText(String.format("%.2f", getSettings().getTextViewWidth()));
-        leftAlignmentTextField.setText(String.format("%.2f", getSettings().getLeftAlignment()));
+        fontScaleTextField.setText(new Double(getSettings().getFontScale()).toString());
+
+        textViewWidthTextField.setText(new Double(getSettings().getTextViewWidth()).toString());
+        leftAlignmentTextField.setText(new Double(getSettings().getLeftAlignment()).toString());
     }
 
 //    берем настройки и помещаем их в объект настроек (теперь он отличается от базы), апдейтим вид
