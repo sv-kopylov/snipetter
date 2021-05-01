@@ -2,11 +2,11 @@ package ru.kopylov.snippeter.fetching;
 
 
 import org.apache.log4j.Logger;
+import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.management.BunchManager;
 import ru.kopylov.snippeter.model.Category;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Snippet;
-import ru.kopylov.snippeter.view.App;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -18,11 +18,11 @@ public class CSVSaver {
     private static Logger logger = Logger.getLogger(CSVSaver.class);
     public static char CSVDelim='|';
     public static char FeaturesDelim=',';
-    private BunchManager bunchManager = new BunchManager();
 
 
     public void saveDBToCSV(String filename){
         File file = new File(filename);
+        BunchManager bunchManager = Context.getInstance().get(BunchManager.class);
         bunchManager.fetchAllSnippets();
         HashMap<Snippet, ArrayList<Feature>> map = bunchManager.getMap();
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) ) {

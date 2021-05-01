@@ -54,4 +54,9 @@ public class Snippet {
     private String filter(String in){
         return in.replaceAll("(\r|\n)"," ");
     }
+
+    @Override
+    public String toString() {
+        return snippet.length()>64?snippet.substring(0, 64):snippet;
+    }
 }

@@ -12,6 +12,8 @@ import ru.kopylov.snippeter.fetching.CSVSaver;
 
 public class MainMenuBar {
     Context ctx = Context.getInstance();
+
+    // region 01 создание menu и подменю
     private MenuBar menuBar = new MenuBar();
 
     private Menu sourcesMenu = new Menu("Источники");
@@ -25,31 +27,40 @@ public class MainMenuBar {
     private MenuItem bookmarksMenuItem = new MenuItem("Закладки");
     private MenuItem addBbookmarkMenuItem = new MenuItem("Добавить");
 
+    private Menu settingsMenu = new Menu("Настройки");
+    private MenuItem viewerSettingsMenuItem = new MenuItem("Настройки просмотра текста");
 
+    private Menu snippetsMenu = new Menu("Отрывки");
+    private MenuItem chooseSnippetsMenuItem = new MenuItem("Выбор отрывка");
 
+    // endregion 01 создание menu и подменю
+
+    // region 02 объявляем переменные для отображения видов и их подложки
     private Stage viewerSettingsDialog;
     private Stage newSourceViewDialog;
     private Stage choseSourceViewDialog;
     private Stage bookmarksDialog;
+    private Stage chooseSnippetsDialog;
 
 
     private ChooseSourceView chooseSourceView;
     private ViewerSettingsView viewerSettingsView;
     private BookmarksView bookmarksView;
-
-
-    private Menu settingsMenu = new Menu("Настройки");
-    private MenuItem viewerSettingsMenuItem = new MenuItem("Настройки просмотра текста");
-
+    private ChooseSnippetsView chooseSnippetsView;
+    // endregion 02 объявляем переменные для отображения видов и их подложки
 
     public MainMenuBar(Stage parent) {
+    // region 03 компонуем менюшки и добавляем их в главную панель меню
         sourcesMenu.getItems().addAll(newSourceMenuItem, chooseSourceMenuItem);
         utilsMenu.getItems().addAll(toCSVMenuItem);
         settingsMenu.getItems().addAll(viewerSettingsMenuItem);
         bookmarksMenu.getItems().addAll(addBbookmarkMenuItem, bookmarksMenuItem);
+        snippetsMenu.getItems().addAll(chooseSnippetsMenuItem);
 
-        menuBar.getMenus().addAll(sourcesMenu, utilsMenu, settingsMenu, bookmarksMenu);
+        menuBar.getMenus().addAll(sourcesMenu, utilsMenu, settingsMenu, bookmarksMenu, snippetsMenu);
+    // endregion 03 компонуем менюшки и добавляем их в главную панель меню
 
+    // region 04 компонуем stage + pane + view
         newSourceViewDialog = createStage(parent); // создаем диалог
         Pane newSourceViewPane = (Pane)new NewSourceView(newSourceViewDialog).getView(); // создаем вид (панель) для диалога
         setScene(newSourceViewDialog, newSourceViewPane); // устанавливаем вид в диалог
@@ -59,15 +70,22 @@ public class MainMenuBar {
         Pane chooseViewPane = (Pane) chooseSourceView.getView();// создаем вид (панель) для диалога
         setScene(choseSourceViewDialog, chooseViewPane); // устанавливаем вид в диалог
 
-        bookmarksDialog = createStage(parent);
+        bookmarksDialog = createStage(parent); // создаем диалог
         bookmarksView = new BookmarksView(bookmarksDialog);
-        Pane bookmarksPane = (Pane) bookmarksView.getView();
-        setScene(bookmarksDialog, bookmarksPane);
+        Pane bookmarksPane = (Pane) bookmarksView.getView();// создаем вид (панель) для диалога
+        setScene(bookmarksDialog, bookmarksPane); // устанавливаем вид в диалог
 
         viewerSettingsView = new ViewerSettingsView();
         viewerSettingsDialog = createStageAndSetScene((Pane)viewerSettingsView.getView(), parent);
 
+        chooseSnippetsDialog = createStage(parent);
+        chooseSnippetsView = new ChooseSnippetsView();
+        Pane choseSnippetPane = (Pane) chooseSnippetsView.getView();
+        setScene(chooseSnippetsDialog, choseSnippetPane);
 
+    // endregion 04 компонуем stage + pane + view
+
+    // region 05 добавление обработчиков
         newSourceMenuItem.setOnAction(event->{
             newSourceViewDialog.show();
         });
@@ -93,6 +111,7 @@ public class MainMenuBar {
         });
 
         addBbookmarkMenuItem.setOnAction(bookmarksView.getAddBookmarkEventHandler());
+    // endregion 05 добавление обработчиков
     }
 
     private Stage createStageAndSetScene(Pane pane, Stage owner){

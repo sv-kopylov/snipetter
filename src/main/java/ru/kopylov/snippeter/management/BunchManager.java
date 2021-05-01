@@ -3,6 +3,7 @@ package ru.kopylov.snippeter.management;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Snippet;
 import ru.kopylov.snippeter.model.SnippetFeatureBunch;
+import ru.kopylov.snippeter.model.Source;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
 import javax.persistence.EntityManager;
@@ -20,13 +21,26 @@ public class BunchManager {
         em = EntityManagerHolder.getInstance().getEntityManager();
     }
 
-    public void fetchAllSnippets(){
+    public HashMap<Snippet, ArrayList<Feature>> fetchAllSnippets(){
+        map.clear();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SnippetFeatureBunch> query = cb.createQuery(SnippetFeatureBunch.class);
         Root<SnippetFeatureBunch> from = query.from(SnippetFeatureBunch.class);
         query.select(from);
         em.createQuery(query).getResultStream().forEach(this::treatOneBunch);
+        return map;
 
+    }
+
+    public HashMap<Snippet, ArrayList<Feature>> fetchSnippetsBySource(Source source){
+        map.clear();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SnippetFeatureBunch> query = cb.createQuery(SnippetFeatureBunch.class);
+        Root<SnippetFeatureBunch> from = query.from(SnippetFeatureBunch.class);
+        query.select(from);
+        query.where(cb.equal(from.get("source"), source));
+        em.createQuery(query).getResultStream().forEach(this::treatOneBunch);
+        return map;
     }
 
     private void treatOneBunch(SnippetFeatureBunch bunch){

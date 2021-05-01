@@ -39,7 +39,7 @@ public class ChooseSourceView implements Viewable {
                textViewerWebViewImpl.setByURL(source.getLinkToFile());
                ResearchView researchView = Context.getInstance().get(ResearchView.class);
                researchView.setSource(source);
-               Context.getInstance().put(source);
+               Context.getInstance().put(source); // помещаем источник в контекст при его выборе.
                parent.close();
 
             }
