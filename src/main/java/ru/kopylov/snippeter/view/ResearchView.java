@@ -12,17 +12,40 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.controllers.FeaturesBank;
+import ru.kopylov.snippeter.management.BunchManager;
 import ru.kopylov.snippeter.management.SnippetDTO;
 import ru.kopylov.snippeter.model.Feature;
+import ru.kopylov.snippeter.model.Snippet;
 import ru.kopylov.snippeter.model.Source;
 import ru.kopylov.snippeter.utils.AnghorBinder;
+
+import java.util.List;
 
 
 public class ResearchView implements Viewable {
     private static Logger logger = Logger.getLogger(ResearchView.class);
+
+    private final EventHandler<ActionEvent> flushButtonHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String txt = snippetText.getText();
+
+            if (txt != null && txt.length() > 0 && source != null && featuresBank.getAllFeatures().size() > 0) {
+                snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
+                setText("");
+                featuresBank.clear();
+            } else {
+                logger.warn("Attempt to save bad snippet");
+            }
+
+            dialog.hide();
+        }
+    };
 
 // shared resources
     private FeaturesBank featuresBank;
@@ -53,22 +76,9 @@ public class ResearchView implements Viewable {
     public void show(){
         dialog.show();
     }
-    private EventHandler<ActionEvent> flushButtonHandler = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String txt = snippetText.getText();
-
-            if(txt!=null&&txt.length()>0&&source!=null&&featuresBank.getAllFeatures().size()>0){
-                    snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
-                    setText("");
-                    featuresBank.clear();
-            } else {
-                logger.warn("Attempt to save bad snippet");
-            }
-
-            dialog.hide();
-        }
-    };
+    @Setter
+    @Getter
+    private boolean editModeEnabled = false;
 
     public ResearchView() {
         Context ctx = Context.getInstance();
@@ -133,6 +143,17 @@ public class ResearchView implements Viewable {
     public void setText(String text){
         snippetText.setText(text);
     }
+
+    public void prepareForEditMode(Snippet snippet){
+        snippetText.setText(snippet.getSnippet());
+        listView.getItems().clear();
+        BunchManager bunchManager = Context.getInstance().get(BunchManager.class);
+//        TODO test me
+        List<Feature> a = bunchManager.getFeatures(snippet);
+        bunchManager.deleteBunches(snippet);
+
+    }
+
 
 
 }

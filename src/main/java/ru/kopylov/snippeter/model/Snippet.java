@@ -12,6 +12,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class Snippet {
+    public static final int LENGHT = 128;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -57,6 +59,6 @@ public class Snippet {
 
     @Override
     public String toString() {
-        return snippet.length()>64?snippet.substring(0, 64):snippet;
+        return snippet.length()>LENGHT?snippet.substring(0, LENGHT)+"...":snippet;
     }
 }

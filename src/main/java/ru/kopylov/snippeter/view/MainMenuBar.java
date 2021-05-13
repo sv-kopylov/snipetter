@@ -79,7 +79,7 @@ public class MainMenuBar {
         viewerSettingsDialog = createStageAndSetScene((Pane)viewerSettingsView.getView(), parent);
 
         chooseSnippetsDialog = createStage(parent);
-        chooseSnippetsView = new ChooseSnippetsView();
+        chooseSnippetsView = new ChooseSnippetsView(chooseSnippetsDialog);
         Pane choseSnippetPane = (Pane) chooseSnippetsView.getView();
         setScene(chooseSnippetsDialog, choseSnippetPane);
 
@@ -108,6 +108,11 @@ public class MainMenuBar {
         bookmarksMenuItem.setOnAction(event -> {
             bookmarksView.updateBookmarks();
             bookmarksDialog.show();
+        });
+
+        chooseSnippetsMenuItem.setOnAction(event -> {
+            chooseSnippetsView.updateSnips();
+            chooseSnippetsDialog.show();
         });
 
         addBbookmarkMenuItem.setOnAction(bookmarksView.getAddBookmarkEventHandler());

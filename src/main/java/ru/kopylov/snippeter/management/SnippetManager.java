@@ -4,73 +4,39 @@ import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.model.Category;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Snippet;
+import ru.kopylov.snippeter.model.Source;
+import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SnippetManager {
+    Context ctx = Context.getInstance();
+    private EntityManager em;
+    private HashMap<Snippet, ArrayList<Feature>> snippet2Features = new HashMap<>();
+
     private HashMap<Category, ArrayList<Snippet>> categories2snippets = new HashMap<>();
     private HashMap<Feature, ArrayList<Snippet>> feature2snippets = new HashMap<>();
-    private HashMap<Snippet, ArrayList<Feature>> snippet2Features ;
-
-
-    public HashMap<Snippet, ArrayList<Feature>> filterByFeatures(Feature...features){
-        HashMap<Snippet, ArrayList<Feature>> res = new HashMap<>();
-        ArrayList<Snippet> snippets;
-        for(Feature f: features){
-            snippets = feature2snippets.get(f);
-            if(snippets!=null){
-                for (Snippet snippet: snippets){
-                    res.put(snippet, snippet2Features.get(snippet));
-                }
-            }
-        }
-
-        return res;
+    public SnippetManager() {
+        em = EntityManagerHolder.getInstance().getEntityManager();
     }
 
-    public HashMap<Snippet, ArrayList<Feature>> filterByCategories(Category... categories){
-        HashMap<Snippet, ArrayList<Feature>> res = new HashMap<>();
-        ArrayList<Snippet> snippets;
-        for(Category cat: categories){
-            snippets = categories2snippets.get(cat);
-            if(snippets!=null){
-                for (Snippet snippet: snippets){
-                    res.put(snippet, snippet2Features.get(snippet));
-                }
-            }
-        }
-        return res;
+    public List<Snippet> fetchSnippetsBySource(){
+        Source source = ctx.get(Source.class);
+        if(source==null) return null;
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Snippet> query = cb.createQuery(Snippet.class);
+        Root<Snippet> from = query.from(Snippet.class);
+        query.select(from);
+        query.where(cb.equal(from.get("source"), source));
+
+        return em.createQuery(query).getResultList();
     }
-
-    public void update(){
-        BunchManager bunchManager = Context.getInstance().get(BunchManager.class);
-        snippet2Features = bunchManager.fetchSnippetsBySource();
-        categories2snippets.clear();
-        feature2snippets.clear();
-        ArrayList<Feature> nextList;
-        for (Snippet snip: snippet2Features.keySet()){
-            nextList = snippet2Features.get(snip);
-            Category category;
-
-            for(Feature feature: nextList){
-                if(!feature2snippets.containsKey(feature)){
-                    feature2snippets.put(feature, new ArrayList<>());
-                }
-                feature2snippets.get(feature).add(snip);
-
-                category = feature.getCategory();
-                if (!categories2snippets.containsKey(category)){
-                    categories2snippets.put(category, new ArrayList<>());
-                }
-                categories2snippets.get(category).add(snip);
-
-
-            }
-
-        }
-    }
-
-
 
 }

@@ -1,45 +1,71 @@
 package ru.kopylov.snippeter.view;
 
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.context.Context;
-import ru.kopylov.snippeter.management.BunchManager;
-import ru.kopylov.snippeter.model.Feature;
+import ru.kopylov.snippeter.management.SnippetManager;
 import ru.kopylov.snippeter.model.Snippet;
-import ru.kopylov.snippeter.model.Source;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class ChooseSnippetsView implements Viewable{
-    Context ctx = Context.getInstance();
+    private static Logger logger = Logger.getLogger(ChooseSnippetsView.class);
+
+    private Context ctx = Context.getInstance();
     private ListView<Snippet> listView;
+    private VBox root;
+    private Stage parent;
 
-    public ChooseSnippetsView() {
+    private EventHandler<MouseEvent> handler = action->{
+        if(action.getClickCount()==2){
+            Snippet snippet = listView.getSelectionModel().getSelectedItem();
+            openChangeSnippetDialog(snippet);
+            logger.info("Snippet selected: "+snippet);
+            parent.close();
+
+        }
+    };
+
+    public ChooseSnippetsView(Stage parent) {
+        this.parent = parent;
+        root = new VBox();
         listView = new ListView<>();
+        root.getChildren().add(listView);
+        root.setPrefWidth(960.);
+
+        listView.setOnMouseClicked(handler);
 
     }
 
-    private BunchManager getBunchManager(){
-        return ctx.get(BunchManager.class);
+    private void openChangeSnippetDialog(Snippet snippet) {
+        ResearchView researchView = ctx.get(ResearchView.class);
+        researchView.setEditModeEnabled(true);
+        researchView.prepareForEditMode(snippet);
+
+        researchView.show();
     }
 
-    private Source getCurrentSource(){
-        return ctx.get(Source.class);
+    private SnippetManager getSnippetManages(){
+        return ctx.get(SnippetManager.class);
     }
 
     public void updateSnips(){
         listView.getItems().clear();
-        Source source = getCurrentSource();
-        if(source!=null){
-            HashMap<Snippet, ArrayList<Feature>> map = getBunchManager().fetchSnippetsBySource(source);
-            listView.getItems().addAll(map.keySet());
+        List<Snippet> list = getSnippetManages().fetchSnippetsBySource();
+        if(list!=null){
+            listView.getItems().addAll(list);
         }
-
     }
 
     @Override
     public Node getView() {
-        return listView;
+        return root;
     }
+
+
 }
