@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ru.kopylov.snippeter.model.Feature;
 import ru.kopylov.snippeter.model.Snippet;
 import ru.kopylov.snippeter.model.SnippetFeatureBunch;
+import ru.kopylov.snippeter.utils.EmTAProxy;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
 import javax.persistence.EntityManager;
@@ -25,9 +26,11 @@ public class BunchManager {
 
 
     private EntityManager em;
+    private EmTAProxy emTAProxy;
 
     public BunchManager() {
         em = EntityManagerHolder.getInstance().getEntityManager();
+        emTAProxy = new EmTAProxy(em);
     }
 
     public HashMap<Snippet, ArrayList<Feature>> fetchAllSnippets(){
@@ -54,21 +57,33 @@ public class BunchManager {
     }
 
     public List<Feature> getFeatures(Snippet snippet){
+        if(!em.getTransaction().isActive()){
+            em.getTransaction().begin();
+        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SnippetFeatureBunch> query = cb.createQuery(SnippetFeatureBunch.class);
         Root<SnippetFeatureBunch> from = query.from(SnippetFeatureBunch.class);
         query.select(from);
         query.where(cb.equal(from.get("snippet"), snippet));
-        return em.createQuery(query).getResultStream().map(bunch -> bunch.getFeature()).collect(Collectors.toList());
+        List<Feature> result = em.createQuery(query).getResultStream().map(bunch -> bunch.getFeature()).collect(Collectors.toList());
+
+        em.flush();
+        em.getTransaction().commit();
+
+        return result;
     }
 
     public void deleteBunches(Snippet snippet){
+        if(!em.getTransaction().isActive()){
+            em.getTransaction().begin();
+        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaDelete<SnippetFeatureBunch> query = cb.createCriteriaDelete(SnippetFeatureBunch.class);
         Root<SnippetFeatureBunch> from = query.from(SnippetFeatureBunch.class);
         query.where(cb.equal(from.get("snippet"), snippet));
         int result = em.createQuery(query).executeUpdate();
         logger.info(String.format("deleted %d bunches", result));
-
+        em.flush();
+        em.getTransaction().commit();
     }
 }

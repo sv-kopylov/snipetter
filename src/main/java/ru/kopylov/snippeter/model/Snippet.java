@@ -24,7 +24,6 @@ public class Snippet {
 
     @Column(columnDefinition="varchar(4096)")
     private String snippet;
-    private String processedSnippet;
 
     public Snippet(String snippet, Source source) {
         this.snippet = filter(snippet);

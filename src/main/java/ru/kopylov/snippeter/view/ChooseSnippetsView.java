@@ -3,6 +3,7 @@ package ru.kopylov.snippeter.view;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,6 +19,9 @@ public class ChooseSnippetsView implements Viewable{
 
     private Context ctx = Context.getInstance();
     private ListView<Snippet> listView;
+    private TableView<Snippet> tableView;
+
+
     private VBox root;
     private Stage parent;
 
@@ -35,6 +39,8 @@ public class ChooseSnippetsView implements Viewable{
         this.parent = parent;
         root = new VBox();
         listView = new ListView<>();
+
+
         root.getChildren().add(listView);
         root.setPrefWidth(960.);
 
@@ -44,9 +50,7 @@ public class ChooseSnippetsView implements Viewable{
 
     private void openChangeSnippetDialog(Snippet snippet) {
         ResearchView researchView = ctx.get(ResearchView.class);
-        researchView.setEditModeEnabled(true);
         researchView.prepareForEditMode(snippet);
-
         researchView.show();
     }
 

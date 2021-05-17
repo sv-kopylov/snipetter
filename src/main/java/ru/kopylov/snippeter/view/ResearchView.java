@@ -30,27 +30,24 @@ import java.util.List;
 public class ResearchView implements Viewable {
     private static Logger logger = Logger.getLogger(ResearchView.class);
 
+    private Snippet editedSnippet;
     private final EventHandler<ActionEvent> flushButtonHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            String txt = snippetText.getText();
-
-            if (txt != null && txt.length() > 0 && source != null && featuresBank.getAllFeatures().size() > 0) {
-                snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
-                setText("");
-                featuresBank.clear();
-            } else {
-                logger.warn("Attempt to save bad snippet");
+            if(isEditModeEnabled()){
+                flushEditedSnippet();
+            } else  {
+                flushNewSnippet();
             }
-
-            dialog.hide();
         }
     };
+
 
 // shared resources
     private FeaturesBank featuresBank;
     private SnippetDTO snippetDTO;
     private Source source;
+    private Scene dialogScene;
 
     private AnchorPane root;
     private TextArea snippetText;
@@ -60,7 +57,20 @@ public class ResearchView implements Viewable {
     private Button remButton;
     private Stage dialog;
     private AliasView aliasView;
-    Scene dialogScene;
+
+    private void flushNewSnippet(){
+        String txt = snippetText.getText();
+
+        if (txt != null && txt.length() > 0 && source != null) {
+            snippetDTO.persist(snippetText.getText(), source, featuresBank.getAllFeatures());
+            setText("");
+            featuresBank.clear();
+        } else {
+            logger.warn("Attempt to save bad snippet");
+        }
+
+        dialog.hide();
+    }
 // обработчики событий
    private EventHandler<ActionEvent> remButtonHandler = new EventHandler<ActionEvent>() {
         @Override
@@ -144,16 +154,34 @@ public class ResearchView implements Viewable {
         snippetText.setText(text);
     }
 
+    // часть кода для редактирования отрывка
     public void prepareForEditMode(Snippet snippet){
-        snippetText.setText(snippet.getSnippet());
-        listView.getItems().clear();
+        setEditModeEnabled(true);
+        editedSnippet = snippet;
+        setText(snippet.getSnippet());
         BunchManager bunchManager = Context.getInstance().get(BunchManager.class);
-//        TODO test me
-        List<Feature> a = bunchManager.getFeatures(snippet);
-        bunchManager.deleteBunches(snippet);
-
+        List<Feature> features = bunchManager.getFeatures(snippet);
+        listView.getItems().clear();
+        listView.getItems().addAll(features);
     }
 
+    private void flushEditedSnippet(){
+        BunchManager bunchManager = Context.getInstance().get(BunchManager.class);
+        bunchManager.deleteBunches(editedSnippet);
+            snippetDTO.persist(editedSnippet, featuresBank.getAllFeatures());
+            setText("");
+            featuresBank.clear();
+        setEditModeEnabled(false);
 
+        listView.getItems().clear();
+        setText("");
+        dialog.hide();
+    }
+    public void prepareForNewMode(String text){
+        setEditModeEnabled(false);
+        setText(text);
+        listView.getItems().clear();
+
+    }
 
 }

@@ -74,7 +74,7 @@ public class TextViewerWebViewImpl implements TextViewer{
 
     public void sendToSnippet(String snip){
         ResearchView researchView = Context.getInstance().get(ResearchView.class);
-        researchView.setText(snip);
+        researchView.prepareForNewMode(snip);
         researchView.show();
     }
 
