@@ -37,7 +37,7 @@ public class TextViewerMenuPanel implements Viewable {
     private Button toTopButton;
     private Button fontBiggerButton;
     private Button fontSmallerButton;
-    private Button getYButton;
+
 
     private MenuButton bookmarksMenuButton;
     private BookmarksView bookmarksView;
@@ -68,7 +68,6 @@ public class TextViewerMenuPanel implements Viewable {
         fontBiggerButton.setPrefWidth(32);
         fontSmallerButton = new Button("-");
         fontSmallerButton.setPrefWidth(32);
-        getYButton = new Button("logY");
 
 
 
@@ -88,7 +87,6 @@ public class TextViewerMenuPanel implements Viewable {
         topPanel.getChildren().add(getSeparator());
         topPanel.getChildren().add(fontBiggerButton);
         topPanel.getChildren().add(fontSmallerButton);
-        topPanel.getChildren().add(getYButton);
 
 
 
@@ -162,10 +160,6 @@ public class TextViewerMenuPanel implements Viewable {
 //            TODO сохранять ли сразу в базу ?
         });
 
-        getYButton.setOnAction(event -> {
-            logger.info("document.body.scrollHeight"+engine.executeScript("document.body.scrollHeight;"));
-
-        });
 
 
 

@@ -2,7 +2,6 @@ package ru.kopylov.snippeter.view.snippetstable;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -24,8 +23,6 @@ public class ChooseSnippetsView implements Viewable {
     private static Logger logger = Logger.getLogger(ChooseSnippetsView.class);
 
     private Context ctx = Context.getInstance();
-    private ListView<Snippet> listView;
-
     private SnippetsTableView snippetsTableView = new SnippetsTableView();
 
 
@@ -46,13 +43,9 @@ public class ChooseSnippetsView implements Viewable {
         this.parent = parent;
         root = new VBox();
         snippetsTableView.getTableView().setOnMouseClicked(handler);
-//        listView = new ListView<>();
 
         root.getChildren().add(snippetsTableView.getTableView());
         root.setPrefWidth(960.);
-
-//        listView.setOnMouseClicked(handler);
-
     }
 
     private void openChangeSnippetDialog(Snippet snippet) {
@@ -70,28 +63,17 @@ public class ChooseSnippetsView implements Viewable {
     }
 
     public void updateSnips(){
-//        listView.getItems().clear();
-//        List<Snippet> list = getSnippetManages().fetchSnippetsBySource();
         HashMap<Snippet, ArrayList<Feature>> map = getBunchManager().fetchAllSnippets(ctx.get(Source.class));
-
         snippetsTableView.clear();
         for (Map.Entry<Snippet, ArrayList<Feature>> entry: map.entrySet()){
             SnippetRepresentation sr = new SnippetRepresentation();
             sr.setValues(entry.getKey(), entry.getValue());
             snippetsTableView.addRow(sr);
         }
-
-//        if(list!=null){
-//            listView.getItems().addAll(list);
-//        }
     }
     
-    
-
     @Override
     public Node getView() {
         return root;
     }
-
-
 }
