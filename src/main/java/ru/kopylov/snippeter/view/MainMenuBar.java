@@ -9,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.kopylov.snippeter.context.Context;
 import ru.kopylov.snippeter.fetching.CSVSaver;
+import ru.kopylov.snippeter.view.snippetstable.ChooseSnippetsView;
 
 public class MainMenuBar {
     Context ctx = Context.getInstance();

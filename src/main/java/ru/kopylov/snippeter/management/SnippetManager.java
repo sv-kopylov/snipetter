@@ -1,10 +1,7 @@
 package ru.kopylov.snippeter.management;
 
 import ru.kopylov.snippeter.context.Context;
-import ru.kopylov.snippeter.model.Category;
-import ru.kopylov.snippeter.model.Feature;
-import ru.kopylov.snippeter.model.Snippet;
-import ru.kopylov.snippeter.model.Source;
+import ru.kopylov.snippeter.model.*;
 import ru.kopylov.snippeter.utils.EntityManagerHolder;
 
 import javax.persistence.EntityManager;
@@ -19,9 +16,9 @@ public class SnippetManager {
     Context ctx = Context.getInstance();
     private EntityManager em;
     private HashMap<Snippet, ArrayList<Feature>> snippet2Features = new HashMap<>();
-
     private HashMap<Category, ArrayList<Snippet>> categories2snippets = new HashMap<>();
     private HashMap<Feature, ArrayList<Snippet>> feature2snippets = new HashMap<>();
+
     public SnippetManager() {
         em = EntityManagerHolder.getInstance().getEntityManager();
     }
@@ -37,6 +34,16 @@ public class SnippetManager {
         query.where(cb.equal(from.get("source"), source));
 
         return em.createQuery(query).getResultList();
+    }
+
+    public List<SnippetFeatureBunch> fetchFeaturesBySnippet(Snippet snippet){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SnippetFeatureBunch> query = cb.createQuery(SnippetFeatureBunch.class);
+        Root<SnippetFeatureBunch> from = query.from(SnippetFeatureBunch.class);
+        query.select(from);
+        query.where(cb.equal(from.get("snippet_id"), snippet));
+        return em.createQuery(query).getResultList();
+
     }
 
 }
