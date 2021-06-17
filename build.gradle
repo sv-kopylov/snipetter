@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'application'
 
 group 'ru.kopylov'
-version '0.0.4'
+version '1.0.0'
 
 mainClassName = 'ru.kopylov.snippeter.view.App'
 

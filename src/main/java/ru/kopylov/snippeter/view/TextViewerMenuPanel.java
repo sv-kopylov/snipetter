@@ -61,7 +61,7 @@ public class TextViewerMenuPanel implements Viewable {
         backButton.setDisable(true);  //  при запуске  кнопки навигации по истории отключены
         forwardButton = new Button("->");
         forwardButton.setDisable(true);  //  при запуске  кнопки навигации по истории отключены
-        searchButton = new Button("search");
+        searchButton = new Button("поиск");
         searchText = new TextField();
         toTopButton = new Button("top");
         fontBiggerButton = new Button("+");
@@ -159,10 +159,6 @@ public class TextViewerMenuPanel implements Viewable {
             webView.setFontScale(currentFontScale);
 //            TODO сохранять ли сразу в базу ?
         });
-
-
-
-
     }
 
     public int getYPos(){
